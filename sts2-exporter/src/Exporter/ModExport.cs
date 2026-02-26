@@ -1,4 +1,3 @@
-using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Godot;
@@ -40,18 +39,16 @@ public class ModExport {
         foreach (var item in items.All()) {
             GD.Print(item);
             if (item is IImageExport imageExport) {
-                var requests = imageExport.ExportImgs();
-                foreach (var (filename, request) in requests)
-                    ViewportManager.RequestDraw(request).ContinueWith(task => {
-                        Image img = task.Result;
-                        string imgDir = $"{dir}/{imageExport.ImgPath}";
-                        DirAccess.MakeDirRecursiveAbsolute(imgDir);
-                        img.SavePng($"{imgDir}/{filename}.png");
-                    });
+                ViewportManager.RequestDraw(imageExport.ExportImg()).ContinueWith(task => {
+                    Image img = task.Result;
+                    string imgDir = $"{dir}/{imageExport.ImgPath}";
+                    DirAccess.MakeDirRecursiveAbsolute(imgDir);
+                    img.SavePng($"{imgDir}/{imageExport.ImgFilename}.png");
+                });
             }
         }
         FileAccess file = FileAccess.Open($"{dir}/items.json", FileAccess.ModeFlags.Write);
-        file.StoreString(JsonSerializer.Serialize(items));
+        file.StoreString(JsonSerializer.Serialize(items, new JsonSerializerOptions() { WriteIndented = true }));
         file.Close();
     }
 }
