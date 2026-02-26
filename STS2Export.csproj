@@ -1,0 +1,18 @@
+<Project Sdk="Godot.NET.Sdk/4.5.1">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="mod_manifest.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>/home/ocean/.steam/steam/steamapps/common/Slay the Spire 2/data_sts2_linuxbsd_x86_64/0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="sts2">
+      <HintPath>/home/ocean/.steam/steam/steamapps/common/Slay the Spire 2/data_sts2_linuxbsd_x86_64/sts2.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

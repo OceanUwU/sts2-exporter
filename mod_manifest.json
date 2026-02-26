@@ -1,0 +1,7 @@
+{
+    "pck_name": "STS2Export",
+    "name": "Exporter",
+    "author": "ocean",
+    "description": "exports stuff",
+    "version": "v0.1"
+}
