@@ -11,7 +11,7 @@ public abstract partial class ItemExport {
     [GeneratedRegex("\\[.*?\\]")]
     private static partial Regex BBCodeRegex();
     private static readonly Regex BBCodeSubstitutor = BBCodeRegex();
-    protected static string StripBBCodeTags(string s) => BBCodeSubstitutor.Replace(s, static m => "");
+    protected static string StripBBCodeTags(string s) => Regex.Unescape(BBCodeSubstitutor.Replace(s, static m => ""));
 }
 
 public interface IImageExport {   

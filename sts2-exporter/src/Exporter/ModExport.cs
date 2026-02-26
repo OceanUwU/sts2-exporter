@@ -37,7 +37,6 @@ public class ModExport {
         string dir = $"{basePath}/{id}";
         DirAccess.MakeDirRecursiveAbsolute(dir);
         foreach (var item in items.All()) {
-            GD.Print(item);
             if (item is IImageExport imageExport) {
                 ViewportManager.RequestDraw(imageExport.ExportImg()).ContinueWith(task => {
                     Image img = task.Result;

@@ -12,12 +12,10 @@ public class MainMenuButton {
     private static NMainMenuTextButton button;
 
     public static void Prefix(NMainMenu __instance) {
-        GD.Print("patchinpre");
         button = (NMainMenuTextButton)__instance.GetNode<NMainMenuTextButton>("MainMenuTextButtons/SettingsButton").Duplicate();
     }
 
     public static void Postfix(NMainMenu __instance) {
-        GD.Print("patchinpost");
         __instance.GetNode<NMainMenuTextButton>("MainMenuTextButtons/SettingsButton").AddSibling(button);
         ViewportManager.AddToTree(button.GetTree());
         button.GetChild<MegaLabel>(0).Text = "Exporter";
