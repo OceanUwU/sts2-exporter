@@ -22,9 +22,10 @@ public class ModExport {
 
     public ModExport() {
         isBasegame = id == "basegame";
+        items = new(this);
     }
 
-    private readonly ItemList items = new();
+    private readonly ItemList items;
 
     public void FindAll() => items.FindAll(); //TEMP
 

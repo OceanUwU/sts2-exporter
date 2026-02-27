@@ -6,6 +6,8 @@ using System.Text.Json.Serialization;
 namespace STS2Export.Exporter;
 
 public class ItemList {
+    [JsonInclude][JsonPropertyName("mod")]
+    private readonly ModExport mod = null;
     [JsonInclude][JsonPropertyName("cards")]
     private readonly List<CardExport> cards = [];
     [JsonInclude][JsonPropertyName("relics")]
@@ -16,6 +18,12 @@ public class ItemList {
     private readonly List<CreatureExport> creatures = [];
     [JsonInclude][JsonPropertyName("keywords")]
     private readonly List<KeywordExport> keywords = [];
+
+    public ItemList() {}
+
+    public ItemList(ModExport mod) : this() {
+        this.mod = mod;
+    }
 
     public void Add(ItemExport item) {
              if (item is CardExport c) cards.Add(c);

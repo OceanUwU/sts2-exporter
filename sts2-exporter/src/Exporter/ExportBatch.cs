@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json;
 using Godot;
 
 namespace STS2Export.Exporter;
@@ -15,6 +16,7 @@ public class ExportBatch {
         FindItems();
         AssignItemsToMods();
         ExportMods();
+        ExportAllData();
         Finish();
     }
 
@@ -39,6 +41,12 @@ public class ExportBatch {
     private void ExportMods() {
         foreach (var (_, mod) in mods)
             mod.Export(BaseDir);
+    }
+
+    private void ExportAllData() {
+        FileAccess file = FileAccess.Open($"{BaseDir}/items.json", FileAccess.ModeFlags.Write);
+        file.StoreString(JsonSerializer.Serialize(items, new JsonSerializerOptions() { WriteIndented = true }));
+        file.Close();
     }
 
     private void Finish() {
