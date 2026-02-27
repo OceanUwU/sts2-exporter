@@ -8,7 +8,7 @@ public class ModExport {
     [JsonInclude][JsonPropertyName("id")]
     private readonly string id = "basegame";
     [JsonInclude][JsonPropertyName("name")]
-    private readonly string name = "Slay the Spire 2";
+    public readonly string Name = "Slay the Spire 2";
     [JsonInclude][JsonPropertyName("version")]
     private readonly string version;
     [JsonInclude][JsonPropertyName("authors")]
