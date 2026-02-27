@@ -7,7 +7,7 @@ namespace STS2Export;
 
 public partial class ViewportManager : Node {
     private static ViewportManager _inst = new();
-    private const int NumViewportsAvailable = 100;
+    private const int NumViewportsAvailable = 5;
 
     private VP[] viewports = new VP[NumViewportsAvailable];
     private static readonly Queue<DrawRequest> drawQueue = [];

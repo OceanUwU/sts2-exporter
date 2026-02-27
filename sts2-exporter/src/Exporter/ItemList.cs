@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -9,15 +10,15 @@ public class ItemList {
     [JsonInclude][JsonPropertyName("mod")]
     private readonly ModExport mod = null;
     [JsonInclude][JsonPropertyName("cards")]
-    private readonly List<CardExport> cards = [];
+    private List<CardExport> cards = [];
     [JsonInclude][JsonPropertyName("relics")]
-    private readonly List<RelicExport> relics = [];
+    private List<RelicExport> relics = [];
     [JsonInclude][JsonPropertyName("potions")]
-    private readonly List<PotionExport> potions = [];
+    private List<PotionExport> potions = [];
     [JsonInclude][JsonPropertyName("creatures")]
-    private readonly List<CreatureExport> creatures = [];
+    private List<CreatureExport> creatures = [];
     [JsonInclude][JsonPropertyName("keywords")]
-    private readonly List<KeywordExport> keywords = [];
+    private List<KeywordExport> keywords = [];
 
     public ItemList() {}
 
@@ -31,6 +32,15 @@ public class ItemList {
         else if (item is PotionExport p) potions.Add(p);
         else if (item is CreatureExport cr) creatures.Add(cr);
         else if (item is KeywordExport k) keywords.Add(k);
+    }
+
+    public void RemoveIf(Func<ItemExport, bool> predicate) {
+        Func<ItemExport, bool> p = c => !predicate(c);
+        cards = [..cards.Where(p).Cast<CardExport>()];
+        relics = [..relics.Where(p).Cast<RelicExport>()];
+        potions = [..potions.Where(p).Cast<PotionExport>()];
+        creatures = [..creatures.Where(p).Cast<CreatureExport>()];
+        keywords = [..keywords.Where(p).Cast<KeywordExport>()];
     }
 
     public void FindAll() {

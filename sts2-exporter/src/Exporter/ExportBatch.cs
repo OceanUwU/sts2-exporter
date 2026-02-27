@@ -10,32 +10,38 @@ public class ExportBatch {
     private readonly Dictionary<string, ModExport> mods = [];
     private readonly ItemList items = new();
 
-    public void Run() {
-        ClearDir();
+    public int ImagesExported = 0;
+    public int NumImagesToExport = 0;
+
+    public void Run(bool images, bool basegame) {
+        DirAccess.MakeDirRecursiveAbsolute(BaseDir);
         FindMods();
         FindItems();
         AssignItemsToMods();
+        if (!basegame)
+            DiscardBasegame();
         ExportMods();
         ExportAllData();
+        if (images)
+            ExportImages();
         Finish();
-    }
-
-    private void ClearDir() {
-        DirAccess.RemoveAbsolute(BaseDir);
-        DirAccess.MakeDirRecursiveAbsolute(BaseDir);
     }
 
     private void FindMods() {
         var mod = new ModExport();
-        mods.Add("test", new ModExport());
-        //TODO: find other mods
+        mods.Add(mod.ID, mod);
     }
 
     private void FindItems() => items.FindAll();
 
     private void AssignItemsToMods() {
         foreach (var item in items.All())
-            mods["test"].AddItem(item);
+            mods["basegame"].AddItem(item);
+    }
+
+    private void DiscardBasegame() {
+        items.RemoveIf(static i => i.Mod.IsBasegame);
+        mods.Remove("basegame");
     }
 
     private void ExportMods() {
@@ -49,8 +55,40 @@ public class ExportBatch {
         file.Close();
     }
 
+    private void ExportImages() {
+        foreach (var item in items.All()) {
+            if (item is IImageExport imageExport) {
+                NumImagesToExport++;
+                ViewportManager.RequestDraw(imageExport.ExportImg()).ContinueWith(task => {
+                    Image img = task.Result;
+                    string imgDir = $"{BaseDir}/{item.Mod.ID}/{imageExport.ImgPath}";
+                    DirAccess.MakeDirRecursiveAbsolute(imgDir);
+                    img.SavePng($"{imgDir}/{imageExport.ImgFilename}.png");
+                    ImagesExported++;
+                });
+            }
+        }
+    }
+
+    public static void OpenDir() {
+        OS.ShellOpen(BaseDir);
+    }
+
+    public static bool DirExists() => DirAccess.DirExistsAbsolute(BaseDir);
+
+    public static void DeleteDir() {
+        DeleteRecursive(BaseDir);
+
+        static void DeleteRecursive(string dir) {
+            foreach (string d in DirAccess.GetDirectoriesAt(dir))
+                DeleteRecursive(dir.PathJoin(d));
+            foreach (string f in DirAccess.GetFilesAt(dir))
+                DirAccess.RemoveAbsolute(dir.PathJoin(f));
+            DirAccess.RemoveAbsolute(dir);
+        }
+    }
+
     private void Finish() {
         GD.Print("Export finished!");
-        OS.ShellOpen(BaseDir);
     }
 }

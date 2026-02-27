@@ -1,6 +1,7 @@
 using Godot;
 using HarmonyLib;
 using MegaCrit.Sts2.addons.mega_text;
+using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.GodotExtensions;
 using MegaCrit.Sts2.Core.Nodes.Screens.MainMenu;
 using STS2Export.Exporter;
@@ -23,6 +24,7 @@ public class MainMenuButton {
     }
 
     private static void OnPress(NButton button) {
-        new ExportBatch().Run();
+        NGame.Instance.AddChild(new ExporterScreen());
+        //new ExportBatch().Run();
     }
 }

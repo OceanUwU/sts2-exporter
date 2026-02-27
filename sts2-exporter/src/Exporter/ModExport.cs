@@ -6,7 +6,7 @@ namespace STS2Export.Exporter;
 
 public class ModExport {
     [JsonInclude][JsonPropertyName("id")]
-    private readonly string id = "basegame";
+    public readonly string ID = "basegame";
     [JsonInclude][JsonPropertyName("name")]
     public readonly string Name = "Slay the Spire 2";
     [JsonInclude][JsonPropertyName("version")]
@@ -18,10 +18,10 @@ public class ModExport {
     [JsonInclude][JsonPropertyName("description")]
     private readonly string description;
 
-    private readonly bool isBasegame;
+    public readonly bool IsBasegame;
 
     public ModExport() {
-        isBasegame = id == "basegame";
+        IsBasegame = ID == "basegame";
         items = new(this);
     }
 
@@ -35,18 +35,8 @@ public class ModExport {
     }
 
     public void Export(string basePath) {
-        string dir = $"{basePath}/{id}";
+        string dir = $"{basePath}/{ID}";
         DirAccess.MakeDirRecursiveAbsolute(dir);
-        foreach (var item in items.All()) {
-            if (item is IImageExport imageExport) {
-                ViewportManager.RequestDraw(imageExport.ExportImg()).ContinueWith(task => {
-                    Image img = task.Result;
-                    string imgDir = $"{dir}/{imageExport.ImgPath}";
-                    DirAccess.MakeDirRecursiveAbsolute(imgDir);
-                    img.SavePng($"{imgDir}/{imageExport.ImgFilename}.png");
-                });
-            }
-        }
         FileAccess file = FileAccess.Open($"{dir}/items.json", FileAccess.ModeFlags.Write);
         file.StoreString(JsonSerializer.Serialize(items, new JsonSerializerOptions() { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping }));
         file.Close();
