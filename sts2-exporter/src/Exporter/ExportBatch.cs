@@ -45,7 +45,7 @@ public class ExportBatch {
 
     private void ExportAllData() {
         FileAccess file = FileAccess.Open($"{BaseDir}/items.json", FileAccess.ModeFlags.Write);
-        file.StoreString(JsonSerializer.Serialize(items, new JsonSerializerOptions() { WriteIndented = true }));
+        file.StoreString(JsonSerializer.Serialize(items, new JsonSerializerOptions() { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping }));
         file.Close();
     }
 
