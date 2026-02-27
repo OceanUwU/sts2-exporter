@@ -11,7 +11,7 @@ namespace STS2Export.Exporter;
 
 public class CardExport : ItemExport, IImageExport {
     private static readonly PackedScene CardScene = GD.Load<PackedScene>((string)typeof(NCard).GetField("_scenePath", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null));
-    private static readonly Vector2I ImgSize = new(676, 916);
+    private static readonly Vector2I ImgSize = new(734, 916);
     
     private readonly CardModel model;
 
@@ -51,6 +51,8 @@ public class CardExport : ItemExport, IImageExport {
         card.Position = (Vector2)ImgSize / 2f;
         card.Model = model;
         card.UpdateVisuals(MegaCrit.Sts2.Core.Entities.Cards.PileType.None, MegaCrit.Sts2.Core.Entities.Cards.CardPreviewMode.Normal);
+        if (upgrades > 0 && model.HasBetaPortrait)
+            card.GetNode<TextureRect>("%Portrait").Texture = ResourceLoader.Load<Texture2D>(model.BetaPortraitPath, null, ResourceLoader.CacheMode.Reuse);;
     });
 
     public static List<CardExport> FindAll() => [..ModelDb.AllCards.SelectMany(m => Enumerable.Range(0, m.MaxUpgradeLevel + 1).Select(u => new CardExport(m, u)))];
