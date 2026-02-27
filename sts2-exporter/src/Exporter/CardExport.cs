@@ -25,7 +25,7 @@ public class CardExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("id")]
     private string ID => model.Id.Entry;
     [JsonInclude][JsonPropertyName("name")]
-    private string Name => model.TitleLocString.GetFormattedText();
+    private string Name => StripBBCodeTags(model.Title);
     [JsonInclude][JsonPropertyName("color")]
     private string Color => model.VisualCardPool.Title.ToLower();
     [JsonInclude][JsonPropertyName("rarity")]
