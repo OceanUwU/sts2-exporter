@@ -10,7 +10,6 @@ using MegaCrit.Sts2.Core.Nodes.Screens.InspectScreens;
 namespace STS2Export.Exporter;
 
 public class RelicExport(RelicModel model) : ItemExport, IImageExport {
-    private static readonly PackedScene RelicScene = GD.Load<PackedScene>((string)typeof(NRelic).GetField("_scenePath", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null));
     private static readonly Vector2I ImgSize = new(200, 200);
 
     private readonly RelicModel model = model;

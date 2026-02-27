@@ -46,8 +46,6 @@ public class CreatureExport : ItemExport, IImageExport {
     private readonly int maxHPAscension;
 
     public static List<CreatureExport> FindAll() => [
-        // TODO: add all player characters
-        // ..
         ..ModelDb.AllCharacters.Select(m => new CreatureExport(m)),
         ..ModelDb.Monsters.OrderBy(m => m.Id.Entry).Select(m => new CreatureExport(m)),
     ];
