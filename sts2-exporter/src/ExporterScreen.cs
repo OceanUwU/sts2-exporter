@@ -70,7 +70,10 @@ public partial class ExporterScreen : Control {
         tween.TweenCallback(Callable.From(QueueFree));
     }
 
-    private void OpenDir() => ExportBatch.OpenDir();
+    private void OpenDir() {
+        if (ExportBatch.OpenDir()) return;
+        ShowError("Folder does not exist! Start exporting first.");
+    }
     private void DeleteDir() {
         ExportBatch.DeleteDir();
         ClearStatus();

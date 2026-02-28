@@ -70,8 +70,10 @@ public class ExportBatch {
         }
     }
 
-    public static void OpenDir() {
+    public static bool OpenDir() {
+        if (!DirAccess.DirExistsAbsolute(BaseDir)) return false;
         OS.ShellOpen(BaseDir);
+        return true;
     }
 
     public static bool DirExists() => DirAccess.DirExistsAbsolute(BaseDir);

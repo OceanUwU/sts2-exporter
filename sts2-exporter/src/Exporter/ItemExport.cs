@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 namespace STS2Export.Exporter;
 
 public abstract partial class ItemExport {
+    [JsonInclude][JsonPropertyName("v")]
+    private readonly byte slayTheSpireVersion = 2;
     [JsonInclude][JsonPropertyName("mod")][JsonConverter(typeof(ModPropertyConverter))]
     public ModExport Mod;
 
