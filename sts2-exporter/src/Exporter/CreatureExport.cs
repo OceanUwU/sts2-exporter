@@ -50,18 +50,14 @@ public class CreatureExport : ItemExport, IImageExport {
         ..ModelDb.Monsters.OrderBy(m => m.Id.Entry).Select(m => new CreatureExport(m)),
     ];
 
-    [JsonIgnore]
-    public string ImgPath => "creatures";
-    [JsonIgnore]
-    public string ImgFilename => ID;
-    public ViewportManager.DrawRequest ExportImg() {
+    public ViewportManager.DrawRequest[] ExportImg() {
         NCreatureVisuals visuals = null;
         if (monsterModel != null)
             visuals = monsterModel.CreateVisuals();
         else if (characterModel != null)
             visuals = characterModel.CreateVisuals();
         Control bounds = visuals.GetNode<Control>("%Bounds");
-        return new((Vector2I)bounds.Size, null, drawer => {
+        return [new((Vector2I)bounds.Size, $"creatures/{ID}", null, drawer => {
             drawer.AddChildSafely(visuals);
             if (visuals != null && visuals.HasSpineAnimation) {
                 var animController = visuals.SpineBody;
@@ -78,6 +74,6 @@ public class CreatureExport : ItemExport, IImageExport {
             visuals.Position = bounds.Size / 2f + new Vector2(0f, bounds.Size.Y * 0.5f);
             visuals.Show();
             visuals.Modulate = Colors.White;
-        });
+        })];
     }
 }

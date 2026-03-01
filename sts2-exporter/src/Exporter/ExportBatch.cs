@@ -36,12 +36,12 @@ public class ExportBatch {
 
     private void AssignItemsToMods() {
         foreach (var item in items.All())
-            mods["basegame"].AddItem(item);
+            mods["slay-the-spire-2"].AddItem(item);
     }
 
     private void DiscardBasegame() {
         items.RemoveIf(static i => i.Mod.IsBasegame);
-        mods.Remove("basegame");
+        mods.Remove("slay-the-spire-2");
     }
 
     private void ExportMods() {
@@ -56,18 +56,18 @@ public class ExportBatch {
     }
 
     private void ExportImages() {
-        foreach (var item in items.All()) {
-            if (item is IImageExport imageExport) {
-                NumImagesToExport++;
-                ViewportManager.RequestDraw(imageExport.ExportImg()).ContinueWith(task => {
-                    Image img = task.Result;
-                    string imgDir = $"{BaseDir}/{item.Mod.ID}/{imageExport.ImgPath}";
-                    DirAccess.MakeDirRecursiveAbsolute(imgDir);
-                    img.SavePng($"{imgDir}/{imageExport.ImgFilename}.png");
-                    ImagesExported++;
-                });
-            }
-        }
+        foreach (var item in items.All())
+            if (item is IImageExport imageExport)
+                foreach (var request in imageExport.ExportImg()) {
+                    NumImagesToExport++;
+                    ViewportManager.RequestDraw(request).ContinueWith(task => {
+                        Image img = task.Result;
+                        string path = $"{BaseDir}/{item.Mod.ID}/{request.Path}.png";
+                        DirAccess.MakeDirRecursiveAbsolute(path[..path.LastIndexOf('/')]);
+                        img.SavePng(path);
+                        ImagesExported++;
+                    });
+                }
     }
 
     public static bool OpenDir() {

@@ -32,12 +32,8 @@ public class RelicExport(RelicModel model) : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("flavorText")]
     private string Flavor => StripBBCodeTags(model.Flavor.GetFormattedText());
     
-    [JsonIgnore]
-    public string ImgPath => "relics";
-    [JsonIgnore]
-    public string ImgFilename => ID;
     private static TextureRect exampleTexRect;
-    public ViewportManager.DrawRequest ExportImg() => new(ImgSize, null, drawer => {
+    public ViewportManager.DrawRequest[] ExportImg() => [new(ImgSize, $"relics/${ID}", null, drawer => {
         if (exampleTexRect == null) {
             var screen = NInspectRelicScreen.Create();
             exampleTexRect = screen.GetNode<TextureRect>("%RelicImage");
@@ -47,7 +43,7 @@ public class RelicExport(RelicModel model) : ItemExport, IImageExport {
         textureRect.SelfModulate = Colors.White;
         textureRect.Texture = model.BigIcon;
         textureRect.Position = (Vector2)ImgSize / 2f - textureRect.Size / 2f;
-    });
+    })];
 
     public static List<RelicExport> FindAll() => [..ModelDb.AllRelics.Select(m => new RelicExport(m))];
 }

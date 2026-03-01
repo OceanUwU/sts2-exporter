@@ -23,17 +23,13 @@ public class PotionExport(PotionModel model) : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("description")]
     private string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText());
     
-    [JsonIgnore]
-    public string ImgPath => "potions";
-    [JsonIgnore]
-    public string ImgFilename => ID;
-    public ViewportManager.DrawRequest ExportImg() => new(ImgSize, null, drawer => {
+    public ViewportManager.DrawRequest[] ExportImg() => [new(ImgSize, $"potions/{ID}", null, drawer => {
         NPotion potion = NPotion.Create(model);
         drawer.AddChild(potion);
         potion.Modulate = Colors.White;
         potion.Position = (Vector2)ImgSize / 2f - potion.Size / 2f;
         potion.Model = model;
-    });
+    })];
 
     public static List<PotionExport> FindAll() => [..ModelDb.AllPotions.Select(m => new PotionExport(m))];
 }

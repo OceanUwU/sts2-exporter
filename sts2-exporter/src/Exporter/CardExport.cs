@@ -39,21 +39,22 @@ public class CardExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("upgrades")]
     private readonly int upgrades;
 
-    [JsonIgnore]
-    public string ImgPath => "card-images";
-    [JsonIgnore]
-    public string ImgFilename => upgrades == 0 ? ID : $"{ID}Plus{upgrades}";
-    public ViewportManager.DrawRequest ExportImg() => new(ImgSize, null, drawer => {
-        NCard card = CardScene.Instantiate<NCard>();
-        drawer.AddChild(card);
-        card.Scale = Vector2.One * 2f;
-        card.Modulate = Colors.White;
-        card.Position = (Vector2)ImgSize / 2f;
-        card.Model = model;
-        card.UpdateVisuals(MegaCrit.Sts2.Core.Entities.Cards.PileType.None, MegaCrit.Sts2.Core.Entities.Cards.CardPreviewMode.Normal);
-        if (upgrades > 0 && model.HasBetaPortrait)
-            card.GetNode<TextureRect>("%Portrait").Texture = ResourceLoader.Load<Texture2D>(model.BetaPortraitPath, null, ResourceLoader.CacheMode.Reuse);;
-    });
+    public ViewportManager.DrawRequest[] ExportImg() {
+        bool exportBeta = upgrades == 0 && model.MaxUpgradeLevel == 0;
+        return exportBeta ? [Request(), Request(true)] : [Request()];
+
+        ViewportManager.DrawRequest Request(bool forceBeta = false) => new(ImgSize, $"{(forceBeta ? "beta-" : "")}card-images/{(upgrades == 0 ? ID : $"{ID}Plus{upgrades}")}", null, drawer => {
+            NCard card = CardScene.Instantiate<NCard>();
+            drawer.AddChild(card);
+            card.Scale = Vector2.One * 2f;
+            card.Modulate = Colors.White;
+            card.Position = (Vector2)ImgSize / 2f;
+            card.Model = model;
+            card.UpdateVisuals(PileType.None, CardPreviewMode.Normal);
+            if ((upgrades > 0 || forceBeta) && model.HasBetaPortrait)
+                card.GetNode<TextureRect>("%Portrait").Texture = ResourceLoader.Load<Texture2D>(model.BetaPortraitPath, null, ResourceLoader.CacheMode.Reuse);
+        });
+    }
 
     public static List<CardExport> FindAll() => [..ModelDb.AllCards.SelectMany(m => Enumerable.Range(0, m.MaxUpgradeLevel + 1).Select(u => new CardExport(m, u)))];
 }

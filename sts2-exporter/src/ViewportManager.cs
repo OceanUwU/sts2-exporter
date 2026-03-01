@@ -57,9 +57,10 @@ public partial class ViewportManager : Node {
     //    img.SavePng(path);
     //}
 
-    public readonly struct DrawRequest(Vector2I dimensions, Action<VP.Drawer> action = null, Action<VP.Drawer> onStart = null) {
+    public readonly struct DrawRequest(Vector2I dimensions, string path = null, Action<VP.Drawer> action = null, Action<VP.Drawer> onStart = null) {
         public readonly TaskCompletionSource<Image> Task = new();
         public readonly Vector2I Dimensions = dimensions;
+        public readonly string Path = path;
         public readonly Action<VP.Drawer> Action = action;
         public readonly Action<VP.Drawer> OnStart = onStart;
     }
