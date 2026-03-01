@@ -35,7 +35,7 @@ public class CreatureExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("name")]
     private readonly string name;
     [JsonInclude][JsonPropertyName("type")]
-    private readonly string type;
+    private readonly string type = "";
     [JsonInclude][JsonPropertyName("minHP")]
     private readonly int minHP;
     [JsonInclude][JsonPropertyName("maxHP")]
@@ -58,7 +58,7 @@ public class CreatureExport : ItemExport, IImageExport {
             visuals = characterModel.CreateVisuals();
         Control bounds = visuals.GetNode<Control>("%Bounds");
         return [new((Vector2I)bounds.Size, $"creatures/{ID}", null, drawer => {
-            drawer.AddChildSafely(visuals);
+            drawer.AddChild(visuals);
             if (visuals != null && visuals.HasSpineAnimation) {
                 var animController = visuals.SpineBody;
                 var animState = visuals.SpineBody.GetAnimationState();
@@ -74,6 +74,6 @@ public class CreatureExport : ItemExport, IImageExport {
             visuals.Position = bounds.Size / 2f + new Vector2(0f, bounds.Size.Y * 0.5f);
             visuals.Show();
             visuals.Modulate = Colors.White;
-        })];
+        }, waitExtraFrames: 10)];
     }
 }

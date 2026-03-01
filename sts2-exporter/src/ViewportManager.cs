@@ -30,7 +30,8 @@ public partial class ViewportManager : Node {
     }
 
     public override void _Process(double delta) {
-        nextViewport = 0;
+        nextViewport = -1;
+        while (viewports[++nextViewport].Doing && nextViewport + 1 < NumViewportsAvailable);
         while (drawQueue.Count > 0 && TakeRequest());
     }
 
@@ -57,12 +58,13 @@ public partial class ViewportManager : Node {
     //    img.SavePng(path);
     //}
 
-    public readonly struct DrawRequest(Vector2I dimensions, string path = null, Action<VP.Drawer> action = null, Action<VP.Drawer> onStart = null) {
+    public readonly struct DrawRequest(Vector2I dimensions, string path = null, Action<VP.Drawer> action = null, Action<VP.Drawer> onStart = null, int waitExtraFrames = 0) {
         public readonly TaskCompletionSource<Image> Task = new();
         public readonly Vector2I Dimensions = dimensions;
         public readonly string Path = path;
         public readonly Action<VP.Drawer> Action = action;
         public readonly Action<VP.Drawer> OnStart = onStart;
+        public readonly int WaitExtraFrames = waitExtraFrames;
     }
 
     public partial class VP : SubViewport {
@@ -85,14 +87,15 @@ public partial class ViewportManager : Node {
             drawer.ImageSize = request.Dimensions;
             request.OnStart?.Invoke(drawer);
             drawer.QueueRedraw();
-            await ToSignal(RenderingServer.Singleton, RenderingServer.SignalName.FramePostDraw);
+            for (int i = 0; i < 1 + request.WaitExtraFrames; i++)
+                await ToSignal(RenderingServer.Singleton, RenderingServer.SignalName.FramePostDraw);
             var img = GetTexture().GetImage();
             request.Task.TrySetResult(img);
-            Doing = false;
             foreach (Node n in drawer.GetChildren()) {
                 drawer.RemoveChild(n);
                 n.QueueFree();
             }
+            Doing = false;
         }
 
         public partial class Drawer : Node2D {

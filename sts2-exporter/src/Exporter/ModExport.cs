@@ -10,13 +10,13 @@ public class ModExport {
     [JsonInclude][JsonPropertyName("name")]
     public readonly string Name = "Slay the Spire 2";
     [JsonInclude][JsonPropertyName("version")]
-    private readonly string version;
+    private readonly string version = "";
     [JsonInclude][JsonPropertyName("authors")]
     private readonly string[] authors = [];
     [JsonInclude][JsonPropertyName("credits")]
-    private readonly string credits;
+    private readonly string credits = "";
     [JsonInclude][JsonPropertyName("description")]
-    private readonly string description;
+    private readonly string description = "";
     [JsonInclude][JsonPropertyName("stsVersion")]
     private readonly byte slayTheSpireVersion = 2;
 
