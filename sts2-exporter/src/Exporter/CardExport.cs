@@ -52,7 +52,7 @@ public class CardExport : ItemExport, IImageExport {
             card.Model = model;
             card.UpdateVisuals(PileType.None, CardPreviewMode.Normal);
             if ((upgrades > 0 || forceBeta) && model.HasBetaPortrait)
-                card.GetNode<TextureRect>("%Portrait").Texture = ResourceLoader.Load<Texture2D>(model.BetaPortraitPath, null, ResourceLoader.CacheMode.Reuse);
+                card.GetNode<TextureRect>(model.Rarity == CardRarity.Ancient ? "%AncientPortrait" : "%Portrait").Texture = ResourceLoader.Load<Texture2D>(model.BetaPortraitPath, null, ResourceLoader.CacheMode.Reuse);
         });
     }
 
