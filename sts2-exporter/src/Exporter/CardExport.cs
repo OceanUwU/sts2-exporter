@@ -33,7 +33,13 @@ public class CardExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("type")]
     private string Type => model.Type.ToString();
     [JsonInclude][JsonPropertyName("cost")]
-    private int Cost => model.EnergyCost.CostsX ? -1 : model.EnergyCost.GetWithModifiers(CostModifiers.None);
+    private string Cost {
+        get {
+            if (model.EnergyCost.CostsX) return "X";
+            var cost = model.EnergyCost.GetWithModifiers(CostModifiers.None);
+            return cost == -1 ? "" : cost.ToString();
+        }
+    }
     [JsonInclude][JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)][JsonPropertyName("starCost")]
     private int? StarCost => model.CanonicalStarCost == -1 ? null : (model.HasStarCostX ? -1 : model.CanonicalStarCost);
     [JsonInclude][JsonPropertyName("description")]

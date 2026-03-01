@@ -74,6 +74,6 @@ public class CreatureExport : ItemExport, IImageExport {
             visuals.Position = bounds.Size / 2f + new Vector2(0f, bounds.Size.Y * 0.5f);
             visuals.Show();
             visuals.Modulate = Colors.White;
-        }, waitExtraFrames: 10)];
+        })];
     }
 }

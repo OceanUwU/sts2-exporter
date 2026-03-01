@@ -45,7 +45,8 @@ public partial class ExporterScreen : Control {
         exportButton.Connect(Button.SignalName.Pressed, Callable.From(Export));
         var tween = CreateTween();
         tween.TweenProperty(this, "modulate:a", 1f, 0.25f);
-        // TEMP - rendering test monster
+        // TEMP - rendering test monster TODO: remove
+        return;
         var model = ModelDb.Monsters.OrderBy(m => m.Id.Entry).FirstOrDefault();
         NCreatureVisuals visuals = model.CreateVisuals();
         Control bounds = visuals.GetNode<Control>("%Bounds");
