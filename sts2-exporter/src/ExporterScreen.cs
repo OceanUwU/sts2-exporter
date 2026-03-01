@@ -14,6 +14,7 @@ public partial class ExporterScreen : Control {
     private Button openButton = new() { Text = "Open Folder" };
     private Button deleteButton = new() { Text = "Delete Folder" };
     private Button exportButton = new() { Text = "Export!" };
+    private Button dumpButton = new() { Text = "Dump Textures!" };
     private CheckBox exportImages = new() { Text = "Export images?", ButtonPressed = true };
     private CheckBox exportBasegame = new() { Text = "Export items from basegame?", ButtonPressed = true };
     private VBoxContainer vBox = new();
@@ -38,11 +39,13 @@ public partial class ExporterScreen : Control {
         vBox.AddChild(openButton);
         vBox.AddChild(deleteButton);
         vBox.AddChild(exportButton);
+        vBox.AddChild(dumpButton);
         vBox.AddChild(statusLabel);
         closeButton.Connect(Button.SignalName.Pressed, Callable.From(Close));
         openButton.Connect(Button.SignalName.Pressed, Callable.From(OpenDir));
         deleteButton.Connect(Button.SignalName.Pressed, Callable.From(DeleteDir));
         exportButton.Connect(Button.SignalName.Pressed, Callable.From(Export));
+        dumpButton.Connect(Button.SignalName.Pressed, Callable.From(Dump));
         var tween = CreateTween();
         tween.TweenProperty(this, "modulate:a", 1f, 0.25f);
         // TEMP - rendering test monster TODO: remove
@@ -115,6 +118,16 @@ public partial class ExporterScreen : Control {
             closeButton.Disabled = false;
             ShowStatus($"Done!");
         }
+    }
+
+    private void Dump() {
+        if (ExportBatch.DirExists()) {
+            ShowError("Export directory already exists! You must delete it first.");
+            return;
+        }
+        exporter = new();
+        exporter.DumpTextures();
+        exporter = null;
     }
 
     private void ClearStatus() => ShowStatus("");

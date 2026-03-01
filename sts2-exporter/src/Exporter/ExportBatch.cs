@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Godot;
+using MegaCrit.Sts2.Core.Assets;
 
 namespace STS2Export.Exporter;
 
@@ -92,5 +93,41 @@ public class ExportBatch {
 
     private void Finish() {
         GD.Print("Export finished!");
+    }
+
+    public void DumpTextures() {
+        DumpDir("res://");
+        AtlasManager.LoadAllAtlases();
+        foreach (string atlasName in AtlasManager._knownAtlases) {
+            string atlasPath = AtlasResourceLoader._atlasBasePath.PathJoin(atlasName);
+            string savePath = atlasPath.Replace("res:/", BaseDir);
+            var atlas = AtlasManager._atlases[atlasName];
+            foreach ((string spriteName, _) in atlas.SpriteMap) {
+                var texture = AtlasManager.GetSprite(atlasName, spriteName);
+                var path = savePath.PathJoin($"{spriteName}.png");
+                DirAccess.MakeDirRecursiveAbsolute(path[..path.LastIndexOf('/')]);
+                ViewportManager.RequestDraw(new((Vector2I)texture.GetSize(), action: drawer => drawer.DrawTexture(texture, Vector2.Zero)))
+                    .ContinueWith(task => task.Result.SavePng(path));
+            }
+        }
+        
+
+        static void DumpDir(string path) {
+            string exportPath = path.Replace("res:/", BaseDir);
+            var files = ResourceLoader.ListDirectory(path);
+            foreach (var file in files) {
+                if (file.EndsWith('/')) {
+                    DumpDir(path.PathJoin(file));
+                } else if (file.EndsWith(".png")) {
+                    DirAccess.MakeDirRecursiveAbsolute(exportPath);
+                    var filePath = path.PathJoin(file);
+                    var resource = ResourceLoader.Load(filePath);
+                    if (resource is Texture2D texture)
+                        texture.GetImage().SavePng(exportPath.PathJoin(file));
+                    else if (resource is Image image)
+                        image.SavePng(exportPath.PathJoin(file));
+                }
+            }
+        }
     }
 }

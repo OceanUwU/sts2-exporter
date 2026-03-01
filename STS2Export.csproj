@@ -13,6 +13,13 @@
     </Reference>
     <Reference Include="sts2">
       <HintPath>/home/ocean/.steam/steam/steamapps/common/Slay the Spire 2/data_sts2_linuxbsd_x86_64/sts2.dll</HintPath>
+      <Publicize>true</Publicize>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>
