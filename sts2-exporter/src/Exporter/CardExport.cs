@@ -56,5 +56,5 @@ public class CardExport : ItemExport, IImageExport {
         });
     }
 
-    public static List<CardExport> FindAll() => [..ModelDb.AllCards.SelectMany(m => Enumerable.Range(0, m.MaxUpgradeLevel + 1).Select(u => new CardExport(m, u)))];
+    public static List<CardExport> FindAll() => [..ModelDb.AllCards.Where(m => m.ShouldShowInCardLibrary).SelectMany(m => Enumerable.Range(0, m.MaxUpgradeLevel + 1).Select(u => new CardExport(m, u)))];
 }
