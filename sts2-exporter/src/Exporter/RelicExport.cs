@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
 using Godot;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Relics;
 using MegaCrit.Sts2.Core.Nodes.Screens.InspectScreens;
@@ -28,9 +29,9 @@ public class RelicExport(RelicModel model) : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("tier")]
     private string Rarity => model.Rarity.ToString();
     [JsonInclude][JsonPropertyName("description")]
-    private string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText());
+    private string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
     [JsonInclude][JsonPropertyName("flavorText")]
-    private string Flavor => StripBBCodeTags(model.Flavor.GetFormattedText());
+    private string Flavor => StripBBCodeTags(model.Flavor.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
     
     private static TextureRect exampleTexRect;
     public ViewportManager.DrawRequest[] ExportImg() => [new(ImgSize, $"relics/{ID}", null, drawer => {

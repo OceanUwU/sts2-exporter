@@ -18,10 +18,17 @@ public abstract partial class ItemExport {
     [GeneratedRegex("\\[.*?\\]")]
     private static partial Regex BBCodeRegex();
     private static readonly Regex BBCodeSubstitutor = BBCodeRegex();
-    protected static string StripBBCodeTags(string s) => Regex.Unescape(BBCodeSubstitutor.Replace(BBCodeImgSubstitutor.Replace(s, static m =>{
-        var path = m.Value["[img]".Length..(m.Value.Length-"[/img]".Length)];
-        return $"{{img={path[(path.LastIndexOf('/')+1)..path.LastIndexOf('.')]}}}";
-    }), static m => ""));
+    //protected static string StripBBCodeTags(string s) => Regex.Unescape(BBCodeSubstitutor.Replace(BBCodeImgSubstitutor.Replace(s, static m =>{
+    //    var path = m.Value["[img]".Length..(m.Value.Length-"[/img]".Length)];
+    //    return $"{{img={path[(path.LastIndexOf('/')+1)..path.LastIndexOf('.')]}}}";
+    //}), static m => ""));
+
+    protected static string StripBBCodeTags(string s, string prefix) => BBCodeSubstitutor.Replace(
+        s
+            .Replace( $"[img]res://images/packed/sprite_fonts/{prefix}_energy_icon.png[/img]", "{E}")
+            .Replace( $"[img]res://images/packed/sprite_fonts/star_icon.png[/img]", "{STAR}"),
+        static m => ""
+    ).Replace("{E}", "[E]").Replace("{STAR}", "[STAR]");
 
     private class ModPropertyConverter : JsonConverter<ModExport> {
         public override ModExport Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {

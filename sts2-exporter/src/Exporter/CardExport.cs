@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using Godot;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 
@@ -25,7 +26,7 @@ public class CardExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("id")]
     private string ID => model.Id.Entry;
     [JsonInclude][JsonPropertyName("name")]
-    private string Name => StripBBCodeTags(model.Title);
+    private string Name => StripBBCodeTags(model.Title, EnergyIconHelper.GetPrefix(model));
     [JsonInclude][JsonPropertyName("color")]
     private string Color => model.VisualCardPool.Title.ToLower();
     [JsonInclude][JsonPropertyName("rarity")]
@@ -43,7 +44,7 @@ public class CardExport : ItemExport, IImageExport {
     [JsonInclude][JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)][JsonPropertyName("starCost")]
     private int? StarCost => model.CanonicalStarCost == -1 ? null : (model.HasStarCostX ? -1 : model.CanonicalStarCost);
     [JsonInclude][JsonPropertyName("description")]
-    private string Description => StripBBCodeTags(model.GetDescriptionForPile(PileType.None));
+    private string Description => StripBBCodeTags(model.GetDescriptionForPile(PileType.None), EnergyIconHelper.GetPrefix(model));
     [JsonInclude][JsonPropertyName("upgrades")]
     private readonly int upgrades;
 

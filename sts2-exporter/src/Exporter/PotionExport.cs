@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
 using Godot;
+using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Potions;
 
@@ -21,7 +22,7 @@ public class PotionExport(PotionModel model) : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("tier")]
     private string Rarity => model.Rarity.ToString();
     [JsonInclude][JsonPropertyName("description")]
-    private string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText());
+    private string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
     
     public ViewportManager.DrawRequest[] ExportImg() => [new(ImgSize, $"potions/{ID}", null, drawer => {
         NPotion potion = NPotion.Create(model);
