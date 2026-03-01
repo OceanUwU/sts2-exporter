@@ -16,7 +16,7 @@ public class PotionExport(PotionModel model) : ItemExport, IImageExport {
     private string ID => model.Id.Entry;
     [JsonInclude][JsonPropertyName("name")]
     private string Name => model.Title.GetFormattedText();
-    [JsonInclude][JsonPropertyName("pool")]
+    [JsonInclude][JsonPropertyName("color")]
     private string Pool => model.Pool.EnergyColorName.ToLower();
     [JsonInclude][JsonPropertyName("tier")]
     private string Rarity => model.Rarity.ToString();
