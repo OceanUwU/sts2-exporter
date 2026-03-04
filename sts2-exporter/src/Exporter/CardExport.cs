@@ -60,7 +60,7 @@ public class CardExport : ItemExport, IImageExport {
 
     private static string CombineDescriptions(string a, string b, TextMode mode) {
         static string PreProcessText(string a, TextMode mode) {
-            a = a.Replace("."," .").Replace(","," ,");
+            a = a.Replace("."," .").Replace(","," ,").Replace("\n", " \n ");
             if (mode == TextMode.WikiData || mode == TextMode.WikiFormat)
                 a = a.Replace("[E]", "<E>");
             return a;
@@ -188,7 +188,7 @@ public class CardExport : ItemExport, IImageExport {
             if (prev == 'a') builder.Append("|");
         }
         // Join and remove unnecesary spaces
-        String replace = builder.ToString().Replace(" .", ".").Replace(" ,", ",");
+        String replace = builder.ToString().Replace(" .", ".").Replace(" ,", ",").Replace(" \n ","\n");
         if (mode == TextMode.WikiData) {
             return replace.Replace(" ]","]").Replace("[ ","[");
         } else {
@@ -197,6 +197,7 @@ public class CardExport : ItemExport, IImageExport {
     }
 
     private string ProcessCombinedDescription(String description, TextMode textMode) {
+        description = description.Replace(" \n] ", "\n]").Replace(" [\n ", "[\n").Replace("\n", "\\n");
         do {
             int start = description.IndexOf('[');
             if (description.Length > start + 8 && description[start + 1] == '#' && description[start + 8] == ']') {
@@ -221,7 +222,7 @@ public class CardExport : ItemExport, IImageExport {
             }
         } while (false);
 
-        return HttpUtility.JavaScriptStringEncode(description);
+        return description;
     }
 
     public ViewportManager.DrawRequest[] ExportImg() {

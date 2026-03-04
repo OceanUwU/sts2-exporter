@@ -3,7 +3,7 @@ return { {{ for card in cards
     continue
   end
 }}
-  ["{{ card.id }}"] = { 
+  ["{{ card.id }}"] = {
     ID = "{{ card.id }}",
     Name = "{{ card.name }}",
     Color = "{{ card.color }}",
@@ -12,5 +12,5 @@ return { {{ for card in cards
     Cost = "{{ card.cost }}",{{ if card.upgraded_version != null && card.cost != card.upgraded_version.cost }}
     CostPlus = "{{ card.upgraded_version.cost }}",{{ end }}
     Text = "{{ card.text_wiki_data }}",
-  }{{ end }}
+  },{{ end }}
 }
