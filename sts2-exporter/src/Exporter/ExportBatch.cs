@@ -2,11 +2,14 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Godot;
 using MegaCrit.Sts2.Core.Assets;
+using Scriban;
+using Scriban.Runtime;
 
 namespace STS2Export.Exporter;
 
 public class ExportBatch {
     private const string BaseDir = "./export";
+    private static readonly string TexDumpDir = BaseDir.PathJoin("texDump");
 
     private readonly Dictionary<string, ModExport> mods = [];
     private readonly ItemList items = new();
@@ -14,7 +17,7 @@ public class ExportBatch {
     public int ImagesExported = 0;
     public int NumImagesToExport = 0;
 
-    public void Run(bool images, bool basegame) {
+    public void Run(bool images, bool basegame, bool doTexDump) {
         DirAccess.MakeDirRecursiveAbsolute(BaseDir);
         FindMods();
         FindItems();
@@ -23,6 +26,8 @@ public class ExportBatch {
             DiscardBasegame();
         ExportMods();
         ExportAllData();
+        if (doTexDump)
+            DumpTextures();
         if (images)
             ExportImages();
         Finish();
@@ -53,6 +58,23 @@ public class ExportBatch {
     private void ExportAllData() {
         FileAccess file = FileAccess.Open($"{BaseDir}/items.json", FileAccess.ModeFlags.Write);
         file.StoreString(JsonSerializer.Serialize(items, new JsonSerializerOptions() { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping }));
+        file.Close();
+        ExportTemplate("wiki-card-data.lua", new{ cards = items.Cards }, BaseDir);
+    }
+
+    private void ExportTemplate(string template, object data, string path) {
+        TemplateContext context = new() {
+            LoopLimit = 0,
+        };
+        ScriptObject scriptObject = [];
+        scriptObject.Import(data);
+        context.PushGlobal(scriptObject);
+        var file = FileAccess.Open($"res://sts2-exporter/templates/{template}.scriban", FileAccess.ModeFlags.Read);
+        var templateText = file.GetAsText();
+        file.Close();
+        var output = Template.Parse(templateText).Render(context);
+        file = FileAccess.Open(path.PathJoin(template), FileAccess.ModeFlags.Write);
+        file.StoreString(output);
         file.Close();
     }
 
@@ -100,7 +122,7 @@ public class ExportBatch {
         AtlasManager.LoadAllAtlases();
         foreach (string atlasName in AtlasManager._knownAtlases) {
             string atlasPath = AtlasResourceLoader._atlasBasePath.PathJoin(atlasName);
-            string savePath = atlasPath.Replace("res:/", BaseDir);
+            string savePath = atlasPath.Replace("res:/", TexDumpDir);
             var atlas = AtlasManager._atlases[atlasName];
             foreach ((string spriteName, _) in atlas.SpriteMap) {
                 var texture = AtlasManager.GetSprite(atlasName, spriteName);
@@ -113,7 +135,7 @@ public class ExportBatch {
         
 
         static void DumpDir(string path) {
-            string exportPath = path.Replace("res:/", BaseDir);
+            string exportPath = path.Replace("res:/", TexDumpDir);
             var files = ResourceLoader.ListDirectory(path);
             foreach (var file in files) {
                 if (file.EndsWith('/')) {

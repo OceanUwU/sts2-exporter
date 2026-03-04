@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Logging;
@@ -24,6 +26,8 @@ public class ModEntry {
                 Log.Info("Or Nor: "+Marshal.PtrToStringAnsi(dlerror()));
             }
         }
+        var currentDllPath = Assembly.GetExecutingAssembly().Location;
+        Assembly.LoadFrom(currentDllPath[..(currentDllPath.LastIndexOf('/')+1)] + "Scriban.dll");
 
         new Harmony("visible_a_9").PatchAll();
     }   

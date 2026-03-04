@@ -1,0 +1,16 @@
+return { {{ for card in cards
+  if card.upgrades > 0
+    continue
+  end
+}}
+  ["{{ card.id }}"] = { 
+    ID = "{{ card.id }}",
+    Name = "{{ card.name }}",
+    Color = "{{ card.color }}",
+    Rarity = "{{ card.rarity }}",
+    Type = "{{ card.type }}",
+    Cost = "{{ card.cost }}",{{ if card.upgraded_version != null && card.cost != card.upgraded_version.cost }}
+    CostPlus = "{{ card.upgraded_version.cost }}",{{ end }}
+    Text = "{{ card.text_wiki_data }}",
+  }{{ end }}
+}
