@@ -15,6 +15,8 @@ public class ItemList {
     private List<RelicExport> relics = [];
     [JsonInclude][JsonPropertyName("potions")]
     private List<PotionExport> potions = [];
+    [JsonInclude][JsonPropertyName("events")]
+    private List<EventExport> events = [];
     [JsonInclude][JsonPropertyName("creatures")]
     private List<CreatureExport> creatures = [];
     [JsonInclude][JsonPropertyName("keywords")]
@@ -32,6 +34,7 @@ public class ItemList {
         else if (item is PotionExport p) potions.Add(p);
         else if (item is CreatureExport cr) creatures.Add(cr);
         else if (item is KeywordExport k) keywords.Add(k);
+        else if (item is EventExport e) events.Add(e);
     }
 
     public void RemoveIf(Func<ItemExport, bool> predicate) {
@@ -39,6 +42,7 @@ public class ItemList {
         Cards = [..Cards.Where(p).Cast<CardExport>()];
         relics = [..relics.Where(p).Cast<RelicExport>()];
         potions = [..potions.Where(p).Cast<PotionExport>()];
+        events = [..events.Where(p).Cast<EventExport>()];
         creatures = [..creatures.Where(p).Cast<CreatureExport>()];
         keywords = [..keywords.Where(p).Cast<KeywordExport>()];
     }
@@ -47,9 +51,10 @@ public class ItemList {
         Cards.AddRange(CardExport.FindAll());
         relics.AddRange(RelicExport.FindAll());
         potions.AddRange(PotionExport.FindAll());
+        events.AddRange(EventExport.FindAll());
         creatures.AddRange(CreatureExport.FindAll());
         keywords.AddRange(KeywordExport.FindAll());
     }
 
-    public List<ItemExport> All() => [..Cards, ..relics, ..potions, ..creatures, ..keywords, ];
+    public List<ItemExport> All() => [..Cards, ..relics, ..potions, ..events, ..creatures, ..keywords, ];
 }

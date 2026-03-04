@@ -50,10 +50,14 @@ public class CardExport : ItemExport, IImageExport {
     public string Description => StripBBCodeTags(model.GetDescriptionForPile(PileType.None), EnergyIconHelper.GetPrefix(model));
     [JsonInclude][JsonPropertyName("upgrades")]
     public readonly int Upgrades;
+    [JsonIgnore]
     public CardExport UpgradedVersion => Upgrades >= model.MaxUpgradeLevel ? null : new(model.CanonicalInstance, Upgrades + 1);
     private string UpgradeDesc => UpgradedVersion is CardExport up ? up.Description : Description;
+    [JsonIgnore]
     public string TextAndUpgrade => ProcessCombinedDescription(CombineDescriptions(Description, UpgradeDesc, TextMode.Normal), TextMode.Normal);
+    [JsonIgnore]
     public string TextWikiData => ProcessCombinedDescription(CombineDescriptions(Description, UpgradeDesc, TextMode.WikiData), TextMode.WikiData);
+    [JsonIgnore]
     public string TextWikiFormat => ProcessCombinedDescription(CombineDescriptions(Description, UpgradeDesc, TextMode.WikiFormat), TextMode.WikiFormat);
 
     private enum TextMode { Normal, WikiData, WikiFormat }
