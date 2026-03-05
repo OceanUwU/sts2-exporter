@@ -3,6 +3,8 @@ This is a mod for Slay the Spire 2 which adds a tool to export data for all its 
 
 It can also dump all textures from the game, including exporting each texture from atlases as individual image files.
 
+Its output format is meant to be mostly compatible with [sts-exporter](https://github.com/OceanUwU/sts-exporter) for Slay the Spire 1, though some features are missing at the moment. Check the issues tab for missing features / progress on them.
+
 # Running the mod (pre-workshop)
 - *Please do not contact the game's devs if something modding-related isn't working, ask in the [Slay the Spire Discord](https://discord.gg/slaythespire)'s #sts2-modding channel instead.*
 1. In steam, right click on Slay the Spire 2, click Properties, click Installed Files, click Browse
