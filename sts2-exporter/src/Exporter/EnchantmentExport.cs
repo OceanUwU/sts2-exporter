@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,7 +10,6 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Cards;
-using MegaCrit.Sts2.Core.Nodes.Potions;
 
 namespace STS2Export.Exporter;
 
@@ -51,5 +49,5 @@ public class EnchantmentExport : ItemExport, IImageExport {
         card.QueueFree();
     })];
 
-    public static List<EnchantmentExport> FindAll() => [..new List<Assembly>([typeof(NGame).Assembly, ..ModManager.AllMods.Select(static m => m.assembly).Where(static a => a != null)]).SelectMany(static a => a.GetTypes()).Where(static t => t.IsAssignableTo(typeof(EnchantmentModel)) && !t.IsAbstract).Select(static t => new EnchantmentExport((EnchantmentModel)ModelDb.Get(t)))];
+    public static List<EnchantmentExport> FindAll() => [..ModelDb.DebugEnchantments.Select(static m => new EnchantmentExport(m))];//[..new List<Assembly>([typeof(NGame).Assembly, ..ModManager.AllMods.Select(static m => m.assembly).Where(static a => a != null)]).SelectMany(static a => a.GetTypes()).Where(static t => t.IsAssignableTo(typeof(EnchantmentModel)) && !t.IsAbstract).Select(static t => new EnchantmentExport((EnchantmentModel)ModelDb.Get(t)))];
 }
