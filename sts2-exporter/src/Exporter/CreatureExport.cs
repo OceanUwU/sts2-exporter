@@ -15,7 +15,7 @@ public class CreatureExport : ItemExport, IImageExport {
         name = monsterModel.Title.GetFormattedText();
         minHP = monsterModel.MinInitialHp;
         maxHP = monsterModel.MaxInitialHp;
-        this.monsterModel = monsterModel;
+        this.monsterModel = monsterModel.ToMutable();
     }
 
     public CreatureExport(CharacterModel characterModel) {
@@ -24,7 +24,7 @@ public class CreatureExport : ItemExport, IImageExport {
         type = "Player";
         //minHP = characterModel.StartingHp;
         maxHP = characterModel.StartingHp;
-        this.characterModel = characterModel;
+        this.characterModel = (CharacterModel)characterModel.MutableClone();
     }
 
     private readonly MonsterModel monsterModel;
@@ -50,7 +50,7 @@ public class CreatureExport : ItemExport, IImageExport {
         ..ModelDb.Monsters.OrderBy(m => m.Id.Entry).Select(m => new CreatureExport(m)),
     ];
 
-    public ViewportManager.DrawRequest[] ExportImg() {
+    public ViewportManager.DrawRequest[] ExportImg() => []; /*{
         NCreatureVisuals visuals = null;
         if (monsterModel != null)
             visuals = monsterModel.CreateVisuals();
@@ -67,6 +67,7 @@ public class CreatureExport : ItemExport, IImageExport {
                     visuals.SetUpSkin(monsterModel);
                 }
                 else if (characterModel != null) {
+                    //characterModel.Creature = new(characterModel, MegaCrit.Sts2.Core.Combat.CombatSide.Enemy, null);
                     characterModel.GenerateAnimator(animController);
                 }
                 animState.SetAnimation("idle_loop");
@@ -75,5 +76,5 @@ public class CreatureExport : ItemExport, IImageExport {
             visuals.Show();
             visuals.Modulate = Colors.White;
         })];
-    }
+    }*/
 }

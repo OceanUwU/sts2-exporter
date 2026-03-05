@@ -14,7 +14,7 @@ using MegaCrit.Sts2.Core.Nodes.Cards;
 namespace STS2Export.Exporter;
 
 public class CardExport : ItemExport, IImageExport {
-    private static readonly PackedScene CardScene = GD.Load<PackedScene>((string)typeof(NCard).GetField("_scenePath", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null));
+    public static readonly PackedScene CardScene = GD.Load<PackedScene>(NCard._scenePath);
     private static readonly Vector2I ImgSize = new(734, 916);
     
     private readonly CardModel model;
