@@ -34,7 +34,7 @@ public class RelicExport(RelicModel model) : ItemExport, IImageExport {
     private string Flavor => StripBBCodeTags(model.Flavor.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
     
     private static TextureRect exampleTexRect;
-    public ViewportManager.DrawRequest[] ExportImg() => [new(ImgSize, $"relics/{ID}", null, drawer => {
+    public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) => [new(ImgSize, $"relics/{ID}", null, drawer => {
         if (exampleTexRect == null) {
             var screen = NInspectRelicScreen.Create();
             exampleTexRect = screen.GetNode<TextureRect>("%RelicImage");

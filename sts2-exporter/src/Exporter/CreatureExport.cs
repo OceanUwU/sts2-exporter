@@ -50,7 +50,7 @@ public class CreatureExport : ItemExport, IImageExport {
         ..ModelDb.Monsters.OrderBy(m => m.Id.Entry).Select(m => new CreatureExport(m)),
     ];
 
-    public ViewportManager.DrawRequest[] ExportImg() => []; /*{
+    public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) => []; /*{
         NCreatureVisuals visuals = null;
         if (monsterModel != null)
             visuals = monsterModel.CreateVisuals();

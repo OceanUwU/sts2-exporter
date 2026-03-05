@@ -14,6 +14,8 @@ public partial class ExporterScreen : Control {
     private Button openButton = new() { Text = "Open Folder" };
     private Button deleteButton = new() { Text = "Delete Folder" };
     private Button exportButton = new() { Text = "Export!" };
+    private OptionButton cardArtType = new();
+    private OptionButton cardUpgradeArtType = new();
     private CheckBox exportImages = new() { Text = "Export images?", ButtonPressed = true };
     private CheckBox exportBasegame = new() { Text = "Export items from basegame?", ButtonPressed = true };
     private CheckBox texDump = new() { Text = "Include full texture dump?", ButtonPressed = false };
@@ -29,13 +31,26 @@ public partial class ExporterScreen : Control {
         SetAnchorsPreset(LayoutPreset.FullRect);
         AddChild(bg);
         bg.SetAnchorsPreset(LayoutPreset.FullRect);
-        AddChild(closeButton);
-        closeButton.SetAnchorsPreset(LayoutPreset.CenterTop);
         AddChild(vBox);
         vBox.SetAnchorsPreset(LayoutPreset.Center);
+        vBox.AddChild(closeButton);
         vBox.AddChild(testLabel);
-        vBox.AddChild(exportImages);
         vBox.AddChild(exportBasegame);
+        vBox.AddChild(exportImages);
+        HBoxContainer baseCardUpgradeContainer = new();
+        baseCardUpgradeContainer.AddChild(new Label() { Text = "Base card art type" });
+        baseCardUpgradeContainer.AddChild(cardArtType);
+        HBoxContainer upgradedCardUpgradeContainer = new();
+        upgradedCardUpgradeContainer.AddChild(new Label() { Text = "Upgraded card art type" });
+        upgradedCardUpgradeContainer.AddChild(cardUpgradeArtType);
+        vBox.AddChild(baseCardUpgradeContainer);
+        vBox.AddChild(upgradedCardUpgradeContainer);
+        foreach (OptionButton b in new OptionButton[] { cardArtType, cardUpgradeArtType }) {
+            b.AddItem("Regular");
+            b.AddItem("Beta");
+        }
+        cardArtType.Select(0);
+        cardUpgradeArtType.Select(1);
         vBox.AddChild(texDump);
         vBox.AddChild(openButton);
         vBox.AddChild(deleteButton);
@@ -67,6 +82,7 @@ public partial class ExporterScreen : Control {
 
     public override void _Process(double delta) {
         Size = GetParent<Control>().Size;
+        vBox.Position = Size /2f - vBox.Size / 2f;
         UpdateExportingProgress();
     }
 
@@ -109,7 +125,13 @@ public partial class ExporterScreen : Control {
         exportButton.Disabled = true;
         closeButton.Disabled = true;
         exporter = new();
-        exporter.Run(exportImages.ButtonPressed, exportBasegame.ButtonPressed, texDump.ButtonPressed);
+        exporter.Run(new() {
+            ExportImages = exportImages.ButtonPressed,
+            ExportBaseGame = exportBasegame.ButtonPressed,
+            DoTexDump = texDump.ButtonPressed,
+            BaseCardIsBetaArt = cardArtType.Selected == 1,
+            UpgradedCardIsBetaArt = cardUpgradeArtType.Selected == 1,
+        });
         if (exporter.NumImagesToExport == 0) {
             exporter = null;
             deleteButton.Disabled = false;

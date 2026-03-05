@@ -42,5 +42,5 @@ public abstract partial class ItemExport {
 }
 
 public interface IImageExport {   
-    public abstract ViewportManager.DrawRequest[] ExportImg();
+    public abstract ViewportManager.DrawRequest[] ExportImg(ExportConfig config);
 }

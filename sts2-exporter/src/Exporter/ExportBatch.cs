@@ -17,19 +17,19 @@ public class ExportBatch {
     public int ImagesExported = 0;
     public int NumImagesToExport = 0;
 
-    public void Run(bool images, bool basegame, bool doTexDump) {
+    public void Run(ExportConfig config) {
         DirAccess.MakeDirRecursiveAbsolute(BaseDir);
         FindMods();
         FindItems();
         AssignItemsToMods();
-        if (!basegame)
+        if (!config.ExportBaseGame)
             DiscardBasegame();
         ExportMods();
         ExportAllData();
-        if (doTexDump)
+        if (config.DoTexDump)
             DumpTextures();
-        if (images)
-            ExportImages();
+        if (config.ExportImages)
+            ExportImages(config);
         Finish();
     }
 
@@ -78,10 +78,10 @@ public class ExportBatch {
         file.Close();
     }
 
-    private void ExportImages() {
+    private void ExportImages(ExportConfig config) {
         foreach (var item in items.All())
             if (item is IImageExport imageExport)
-                foreach (var request in imageExport.ExportImg()) {
+                foreach (var request in imageExport.ExportImg(config)) {
                     NumImagesToExport++;
                     ViewportManager.RequestDraw(request).ContinueWith(task => {
                         Image img = task.Result;

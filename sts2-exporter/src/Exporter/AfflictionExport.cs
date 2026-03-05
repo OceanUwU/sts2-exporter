@@ -30,11 +30,10 @@ public class AfflictionExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("description")]
     private string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText().Replace("999", "N"), EnergyIconHelper.GetPrefix(model));
     
-    public ViewportManager.DrawRequest[] ExportImg() => [new(ImgSize, $"afflictions/{ID}", null, drawer => {
+    public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) => [new(ImgSize, $"afflictions/{ID}", null, drawer => {
         var cardModel = ((CardModel)ModelDb.Get(typeof(UltimateDefend))).ToMutable();
         cardModel.AfflictInternal(model, model.Amount);
         NCard card = CardExport.CardScene.Instantiate<NCard>();
-        drawer.AddChild(card);
         drawer.AddChild(card);
         card.Modulate = Colors.White;
         card.Position = (Vector2)ImgSize / 2f;

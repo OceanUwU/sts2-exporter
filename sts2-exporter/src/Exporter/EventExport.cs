@@ -24,7 +24,7 @@ public class EventExport(EventModel model) : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("options")]
     private string[] Options => [..model.GameInfoOptions.Reverse().Select(loc => StripBBCodeTags(loc.GetFormattedText(), EnergyIconHelper.GetPrefix(model)))];
     
-    public ViewportManager.DrawRequest[] ExportImg() => []; /*{
+    public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) => []; /*{
         if (model.LayoutType == MegaCrit.Sts2.Core.Events.EventLayoutType.Combat) return [];
         var scene = model.CreateScene();
         if (scene == null) return [];

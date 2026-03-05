@@ -24,7 +24,7 @@ public class PotionExport(PotionModel model) : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("description")]
     private string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
     
-    public ViewportManager.DrawRequest[] ExportImg() => [new(ImgSize, $"potions/{ID}", null, drawer => {
+    public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) => [new(ImgSize, $"potions/{ID}", null, drawer => {
         NPotion potion = NPotion.Create(model);
         drawer.AddChild(potion);
         potion.Modulate = Colors.White;

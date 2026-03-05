@@ -229,11 +229,11 @@ public class CardExport : ItemExport, IImageExport {
         return description;
     }
 
-    public ViewportManager.DrawRequest[] ExportImg() {
+    public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) {
         bool exportBeta = Upgrades == 0 && model.MaxUpgradeLevel == 0;
-        return exportBeta ? [Request(), Request(true)] : [Request()];
+        return exportBeta ? [Request(config.BaseCardIsBetaArt), Request(config.UpgradedCardIsBetaArt, true)] : [Request()];
 
-        ViewportManager.DrawRequest Request(bool forceBeta = false) => new(ImgSize, $"{(forceBeta ? "beta-" : "")}card-images/{(Upgrades == 0 ? ID : $"{ID}Plus{Upgrades}")}", null, drawer => {
+        ViewportManager.DrawRequest Request(bool forceBeta = false, bool alternate = false) => new(ImgSize, $"{(alternate ? "beta-" : "")}card-images/{(Upgrades == 0 ? ID : $"{ID}Plus{Upgrades}")}", null, drawer => {
             NCard card = CardScene.Instantiate<NCard>();
             drawer.AddChild(card);
             card.Scale = Vector2.One * 2f;
@@ -241,7 +241,7 @@ public class CardExport : ItemExport, IImageExport {
             card.Position = (Vector2)ImgSize / 2f;
             card.Model = model;
             card.UpdateVisuals(PileType.None, CardPreviewMode.Normal);
-            if ((Upgrades > 0 || forceBeta) && model.HasBetaPortrait)
+            if ((forceBeta || (Upgrades == 0 ? config.BaseCardIsBetaArt : config.UpgradedCardIsBetaArt)) && model.HasBetaPortrait)
                 card.GetNode<TextureRect>(model.Rarity == CardRarity.Ancient ? "%AncientPortrait" : "%Portrait").Texture = ResourceLoader.Load<Texture2D>(model.BetaPortraitPath, null, ResourceLoader.CacheMode.Reuse);
         });
     }
