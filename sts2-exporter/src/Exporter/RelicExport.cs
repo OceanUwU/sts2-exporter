@@ -21,11 +21,8 @@ public class RelicExport(RelicModel model) : ItemExport, IImageExport {
     public string Name => model.Title.GetFormattedText();
     [JsonInclude][JsonPropertyName("pool")]
     public string Pool => model.Pool.EnergyColorName.ToLower();
-    //
-    // TODO: find which ancient the relics come from ??
-    //
-    //[JsonInclude][JsonPropertyName("ancient")]
-    //private string Ancient => model.
+    [JsonInclude][JsonPropertyName("ancient")]
+    public string Ancient => ModelDb.AllAncients.FirstOrDefault(m => m.AllPossibleOptions.Select(static o => o.Relic.Id.Entry).Contains(model.Id.Entry))?.Title.GetRawText();
     [JsonInclude][JsonPropertyName("tier")]
     public string Rarity => model.Rarity.ToString();
     [JsonInclude][JsonPropertyName("description")]

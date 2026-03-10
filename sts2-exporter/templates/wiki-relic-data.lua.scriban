@@ -3,7 +3,8 @@ return { {{ for relic in relics }}
     ID = "{{ relic.id }}",
     Name = "{{ relic.name }}",
     Description = "{{ relic.description }}",
-    Character = "{{ relic.pool }}",
+    Character = "{{ relic.pool }}",{{ if relic.ancient != null }}
+    Ancient = "{{ relic.ancient }}",{{ end }}
     Rarity = "{{ relic.rarity }}",
     Flavor = "{{ relic.flavor }}",
   },{{ end }}
