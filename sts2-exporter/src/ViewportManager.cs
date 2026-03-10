@@ -67,7 +67,7 @@ public partial class ViewportManager : Node {
         public readonly int WaitExtraFrames = waitExtraFrames;
     }
 
-    public partial class VP : SubViewport {
+    public partial class VP : Window {
         private Drawer drawer = new();
         public bool Doing = false;
 
@@ -75,14 +75,16 @@ public partial class ViewportManager : Node {
             base._Ready();
             TransparentBg = true;
             AddChild(drawer);
-            RenderTargetUpdateMode = UpdateMode.Disabled;
+            Hide();
+            //RenderTargetUpdateMode = UpdateMode.Disabled;
         }
 
         public async void TakeRequest(DrawRequest request) {
             Doing = true;
+            Show();
             if (Size != request.Dimensions)
                 Size = request.Dimensions;
-            RenderTargetUpdateMode = UpdateMode.Once;
+            //RenderTargetUpdateMode = UpdateMode.Once;
             drawer.DrawAction = request.Action;
             drawer.ImageSize = request.Dimensions;
             request.OnStart?.Invoke(drawer);
@@ -95,6 +97,7 @@ public partial class ViewportManager : Node {
                 drawer.RemoveChild(n);
                 n.QueueFree();
             }
+            Hide();
             Doing = false;
         }
 

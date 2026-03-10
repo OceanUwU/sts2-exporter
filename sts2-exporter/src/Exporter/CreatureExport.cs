@@ -50,18 +50,20 @@ public class CreatureExport : ItemExport, IImageExport {
         ..ModelDb.Monsters.OrderBy(m => m.Id.Entry).Select(m => new CreatureExport(m)),
     ];
 
-    public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) => []; /*{
+    public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) {
         NCreatureVisuals visuals = null;
         if (monsterModel != null)
             visuals = monsterModel.CreateVisuals();
         else if (characterModel != null)
             visuals = characterModel.CreateVisuals();
-        Control bounds = visuals.GetNode<Control>("%Bounds");
-        return [new((Vector2I)bounds.Size, $"creatures/{ID}", null, drawer => {
+        Vector2I bounds = visuals.HasSpineAnimation ? (Vector2I)visuals.SpineBody.GetSkeleton().GetBounds().Size : (Vector2I)visuals.GetNode<Control>("%Bounds").Size;
+        return [new(bounds, $"creatures/{ID}", null, drawer => {
             drawer.AddChild(visuals);
             if (visuals != null && visuals.HasSpineAnimation) {
                 var animController = visuals.SpineBody;
                 var animState = visuals.SpineBody.GetAnimationState();
+                animState.SetTimeScale(0f);
+                visuals.SpineBody.GetSkeleton().GetBounds();
                 if (monsterModel != null) {
                     monsterModel.GenerateAnimator(animController);
                     visuals.SetUpSkin(monsterModel);
@@ -72,9 +74,9 @@ public class CreatureExport : ItemExport, IImageExport {
                 }
                 animState.SetAnimation("idle_loop");
             }
-            visuals.Position = bounds.Size / 2f + new Vector2(0f, bounds.Size.Y * 0.5f);
+            visuals.Position = bounds / 2 + new Vector2(0f, bounds.Y * 0.5f);
             visuals.Show();
             visuals.Modulate = Colors.White;
-        })];
-    }*/
+        }, waitExtraFrames: 1)];
+    }
 }
