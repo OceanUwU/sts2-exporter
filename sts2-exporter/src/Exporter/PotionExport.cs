@@ -14,15 +14,15 @@ public class PotionExport(PotionModel model) : ItemExport, IImageExport {
     private readonly PotionModel model = model.ToMutable();
 
     [JsonInclude][JsonPropertyName("id")]
-    private string ID => model.Id.Entry;
+    public string ID => model.Id.Entry;
     [JsonInclude][JsonPropertyName("name")]
-    private string Name => model.Title.GetFormattedText();
+    public string Name => model.Title.GetFormattedText();
     [JsonInclude][JsonPropertyName("color")]
-    private string Pool => model.Pool.EnergyColorName.ToLower();
+    public string Pool => model.Pool.EnergyColorName.ToLower();
     [JsonInclude][JsonPropertyName("tier")]
-    private string Rarity => model.Rarity.ToString();
+    public string Rarity => model.Rarity.ToString();
     [JsonInclude][JsonPropertyName("description")]
-    private string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
+    public string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
     
     public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) => [new(ImgSize, $"potions/{ID}", null, drawer => {
         NPotion potion = NPotion.Create(model);

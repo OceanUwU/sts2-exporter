@@ -12,19 +12,19 @@ public class ItemList {
     [JsonInclude][JsonPropertyName("cards")]
     public List<CardExport> Cards = [];
     [JsonInclude][JsonPropertyName("relics")]
-    private List<RelicExport> relics = [];
+    public List<RelicExport> Relics = [];
     [JsonInclude][JsonPropertyName("potions")]
-    private List<PotionExport> potions = [];
+    public List<PotionExport> Potions = [];
     [JsonInclude][JsonPropertyName("events")]
-    private List<EventExport> events = [];
+    public List<EventExport> Events = [];
     [JsonInclude][JsonPropertyName("creatures")]
-    private List<CreatureExport> creatures = [];
+    public List<CreatureExport> Creatures = [];
     [JsonInclude][JsonPropertyName("enchantments")]
-    private List<EnchantmentExport> enchantments = [];
+    public List<EnchantmentExport> Enchantments = [];
     [JsonInclude][JsonPropertyName("keywords")]
-    private List<KeywordExport> keywords = [];
+    public List<KeywordExport> Keywords = [];
     [JsonInclude][JsonPropertyName("afflictions")]
-    private List<AfflictionExport> afflictions = [];
+    public List<AfflictionExport> Afflictions = [];
 
     public ItemList() {}
 
@@ -34,37 +34,37 @@ public class ItemList {
 
     public void Add(ItemExport item) {
              if (item is CardExport c) Cards.Add(c);
-        else if (item is RelicExport r) relics.Add(r);
-        else if (item is PotionExport p) potions.Add(p);
-        else if (item is CreatureExport cr) creatures.Add(cr);
-        else if (item is KeywordExport k) keywords.Add(k);
-        else if (item is EventExport e) events.Add(e);
-        else if (item is EnchantmentExport ench) enchantments.Add(ench);
-        else if (item is AfflictionExport a) afflictions.Add(a);
+        else if (item is RelicExport r) Relics.Add(r);
+        else if (item is PotionExport p) Potions.Add(p);
+        else if (item is CreatureExport cr) Creatures.Add(cr);
+        else if (item is KeywordExport k) Keywords.Add(k);
+        else if (item is EventExport e) Events.Add(e);
+        else if (item is EnchantmentExport ench) Enchantments.Add(ench);
+        else if (item is AfflictionExport a) Afflictions.Add(a);
     }
 
     public void RemoveIf(Func<ItemExport, bool> predicate) {
         Func<ItemExport, bool> p = c => !predicate(c);
         Cards = [..Cards.Where(p).Cast<CardExport>()];
-        relics = [..relics.Where(p).Cast<RelicExport>()];
-        potions = [..potions.Where(p).Cast<PotionExport>()];
-        events = [..events.Where(p).Cast<EventExport>()];
-        creatures = [..creatures.Where(p).Cast<CreatureExport>()];
-        keywords = [..keywords.Where(p).Cast<KeywordExport>()];
-        enchantments = [..enchantments.Where(p).Cast<EnchantmentExport>()];
-        afflictions = [..afflictions.Where(p).Cast<AfflictionExport>()];
+        Relics = [..Relics.Where(p).Cast<RelicExport>()];
+        Potions = [..Potions.Where(p).Cast<PotionExport>()];
+        Events = [..Events.Where(p).Cast<EventExport>()];
+        Creatures = [..Creatures.Where(p).Cast<CreatureExport>()];
+        Keywords = [..Keywords.Where(p).Cast<KeywordExport>()];
+        Enchantments = [..Enchantments.Where(p).Cast<EnchantmentExport>()];
+        Afflictions = [..Afflictions.Where(p).Cast<AfflictionExport>()];
     }
 
     public void FindAll() {
         Cards.AddRange(CardExport.FindAll());
-        relics.AddRange(RelicExport.FindAll());
-        potions.AddRange(PotionExport.FindAll());
-        events.AddRange(EventExport.FindAll());
-        creatures.AddRange(CreatureExport.FindAll());
-        keywords.AddRange(KeywordExport.FindAll());
-        enchantments.AddRange(EnchantmentExport.FindAll());
-        afflictions.AddRange(AfflictionExport.FindAll());
+        Relics.AddRange(RelicExport.FindAll());
+        Potions.AddRange(PotionExport.FindAll());
+        Events.AddRange(EventExport.FindAll());
+        Creatures.AddRange(CreatureExport.FindAll());
+        Keywords.AddRange(KeywordExport.FindAll());
+        Enchantments.AddRange(EnchantmentExport.FindAll());
+        Afflictions.AddRange(AfflictionExport.FindAll());
     }
 
-    public List<ItemExport> All() => [ ..Cards, ..relics, ..potions, ..events, ..creatures, ..keywords, ..enchantments, ..afflictions ];
+    public List<ItemExport> All() => [ ..Cards, ..Relics, ..Potions, ..Events, ..Creatures, ..Keywords, ..Enchantments, ..Afflictions ];
 }

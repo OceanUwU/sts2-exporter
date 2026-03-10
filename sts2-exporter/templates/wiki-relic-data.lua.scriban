@@ -1,0 +1,10 @@
+return { {{ for relic in relics }}
+  ["{{ relic.id }}"] = {
+    ID = "{{ relic.id }}",
+    Name = "{{ relic.name }}",
+    Description = "{{ relic.description }}",
+    Character = "{{ relic.pool }}",
+    Rarity = "{{ relic.rarity }}",
+    Flavor = "{{ relic.flavor }}",
+  },{{ end }}
+}

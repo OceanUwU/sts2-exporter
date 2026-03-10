@@ -16,22 +16,22 @@ public class RelicExport(RelicModel model) : ItemExport, IImageExport {
     private readonly RelicModel model = model;
 
     [JsonInclude][JsonPropertyName("id")]
-    private string ID => model.Id.Entry;
+    public string ID => model.Id.Entry;
     [JsonInclude][JsonPropertyName("name")]
-    private string Name => model.Title.GetFormattedText();
+    public string Name => model.Title.GetFormattedText();
     [JsonInclude][JsonPropertyName("pool")]
-    private string Pool => model.Pool.EnergyColorName.ToLower();
+    public string Pool => model.Pool.EnergyColorName.ToLower();
     //
     // TODO: find which ancient the relics come from ??
     //
     //[JsonInclude][JsonPropertyName("ancient")]
     //private string Ancient => model.
     [JsonInclude][JsonPropertyName("tier")]
-    private string Rarity => model.Rarity.ToString();
+    public string Rarity => model.Rarity.ToString();
     [JsonInclude][JsonPropertyName("description")]
-    private string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
+    public string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
     [JsonInclude][JsonPropertyName("flavorText")]
-    private string Flavor => StripBBCodeTags(model.Flavor.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
+    public string Flavor => StripBBCodeTags(model.Flavor.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
     
     private static TextureRect exampleTexRect;
     public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) => [new(ImgSize, $"relics/{ID}", null, drawer => {

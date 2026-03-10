@@ -60,6 +60,8 @@ public class ExportBatch {
         file.StoreString(JsonSerializer.Serialize(items, new JsonSerializerOptions() { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping }));
         file.Close();
         ExportTemplate("wiki-card-data.lua", new{ cards = items.Cards }, BaseDir);
+        ExportTemplate("wiki-relic-data.lua", new{ relics = items.Relics }, BaseDir);
+        ExportTemplate("wiki-potion-data.lua", new{ potions = items.Potions }, BaseDir);
     }
 
     private void ExportTemplate(string template, object data, string path) {

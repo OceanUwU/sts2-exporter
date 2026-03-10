@@ -1,0 +1,9 @@
+return { {{ for potion in potions }}
+  ["{{ potion.id }}"] = {
+    ID = "{{ potion.id }}",
+    Name = "{{ potion.name }}",
+    Character = "{{ potion.pool }}",
+    Rarity = "{{ potion.rarity }}",
+    Text = "{{ potion.description }}",
+  },{{ end }}
+}
