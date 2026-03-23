@@ -1,7 +1,11 @@
 {
-    "pck_name": "STS2Export",
+    "id": "STS2Export",
     "name": "Exporter",
     "author": "ocean",
     "description": "exports stuff",
-    "version": "v0.1.2"
+    "version": "v0.1.2",
+    "has_pck": true,
+    "has_dll": true,
+    "dependencies": [],
+    "affects_gameplay": false
 }
