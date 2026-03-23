@@ -20,6 +20,7 @@ public class CardExport : ItemExport, IImageExport {
     private readonly CardModel model;
 
     public CardExport(CardModel model, int upgrades) {
+        Assembly = model.GetType().Assembly;
         this.model = model.ToMutable();
         this.Upgrades = upgrades;
         for (int i = 0; i < this.Upgrades; i++)

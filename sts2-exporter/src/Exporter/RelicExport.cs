@@ -10,10 +10,15 @@ using MegaCrit.Sts2.Core.Nodes.Screens.InspectScreens;
 
 namespace STS2Export.Exporter;
 
-public class RelicExport(RelicModel model) : ItemExport, IImageExport {
+public class RelicExport : ItemExport, IImageExport {
     private static readonly Vector2I ImgSize = new(200, 200);
 
-    private readonly RelicModel model = model;
+    private readonly RelicModel model;
+
+    public RelicExport(RelicModel model) {
+        Assembly = model.GetType().Assembly;
+        this.model = model;
+    }
 
     [JsonInclude][JsonPropertyName("id")]
     public string ID => model.Id.Entry;

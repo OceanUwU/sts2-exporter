@@ -19,6 +19,7 @@ public class EnchantmentExport : ItemExport, IImageExport {
     private readonly EnchantmentModel model;
 
     public EnchantmentExport(EnchantmentModel model) {
+        Assembly = model.GetType().Assembly;
         this.model = model.ToMutable();
         if (this.model.ShowAmount)
             this.model.Amount = 999;

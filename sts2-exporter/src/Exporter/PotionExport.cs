@@ -8,10 +8,15 @@ using MegaCrit.Sts2.Core.Nodes.Potions;
 
 namespace STS2Export.Exporter;
 
-public class PotionExport(PotionModel model) : ItemExport, IImageExport {
+public class PotionExport : ItemExport, IImageExport {
     private static readonly Vector2I ImgSize = new(64, 64);
 
-    private readonly PotionModel model = model.ToMutable();
+    private readonly PotionModel model;
+
+    public PotionExport(PotionModel model) {
+        Assembly = model.GetType().Assembly;
+        this.model = model.ToMutable();
+    }
 
     [JsonInclude][JsonPropertyName("id")]
     public string ID => model.Id.Entry;

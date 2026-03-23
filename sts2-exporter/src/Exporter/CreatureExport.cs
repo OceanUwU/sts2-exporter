@@ -11,6 +11,7 @@ namespace STS2Export.Exporter;
 
 public class CreatureExport : ItemExport, IImageExport {
     public CreatureExport(MonsterModel monsterModel) {
+        Assembly = monsterModel.GetType().Assembly;
         ID = monsterModel.Id.Entry;
         name = monsterModel.Title.GetFormattedText();
         minHP = monsterModel.MinInitialHp;
@@ -19,6 +20,7 @@ public class CreatureExport : ItemExport, IImageExport {
     }
 
     public CreatureExport(CharacterModel characterModel) {
+        Assembly = characterModel.GetType().Assembly;
         ID = characterModel.Id.Entry;
         name = characterModel.Title.GetFormattedText();
         type = "Player";

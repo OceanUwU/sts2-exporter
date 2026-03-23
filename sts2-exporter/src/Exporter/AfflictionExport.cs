@@ -19,6 +19,7 @@ public class AfflictionExport : ItemExport, IImageExport {
     private readonly AfflictionModel model;
 
     public AfflictionExport(AfflictionModel model) {
+        Assembly = model.GetType().Assembly;
         this.model = model.ToMutable();
         this.model.Amount = 999;
     }

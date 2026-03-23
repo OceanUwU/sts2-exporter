@@ -8,7 +8,7 @@ namespace STS2Export.Exporter;
 
 public class ItemList {
     [JsonInclude][JsonPropertyName("mod")]
-    private readonly ModExport mod = null;
+    public ModExport Mod = null;
     [JsonInclude][JsonPropertyName("cards")]
     public List<CardExport> Cards = [];
     [JsonInclude][JsonPropertyName("relics")]
@@ -29,7 +29,7 @@ public class ItemList {
     public ItemList() {}
 
     public ItemList(ModExport mod) : this() {
-        this.mod = mod;
+        this.Mod = mod;
     }
 
     public void Add(ItemExport item) {

@@ -8,10 +8,15 @@ using MegaCrit.Sts2.Core.Nodes.Potions;
 
 namespace STS2Export.Exporter;
 
-public class EventExport(EventModel model) : ItemExport, IImageExport {
+public class EventExport : ItemExport, IImageExport {
     private static readonly Vector2I ImgSize = new(1920, 1080);
 
-    private readonly EventModel model = model.ToMutable();
+    private readonly EventModel model;
+
+    public EventExport(EventModel model) {
+        this.model = model.ToMutable();
+        Assembly = model.GetType().Assembly;
+    }
 
     [JsonInclude][JsonPropertyName("id")]
     private string ID => model.Id.Entry;

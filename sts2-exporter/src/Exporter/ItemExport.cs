@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -11,6 +12,8 @@ public abstract partial class ItemExport {
     private readonly byte slayTheSpireVersion = 2;
     [JsonInclude][JsonPropertyName("mod")][JsonConverter(typeof(ModPropertyConverter))]
     public ModExport Mod;
+    [JsonIgnore]
+    public Assembly Assembly;
 
     [GeneratedRegex("\\[img.*?\\/img\\]")]
     private static partial Regex BBCodeImgRegex();

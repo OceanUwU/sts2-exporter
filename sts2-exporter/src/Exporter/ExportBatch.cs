@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using Godot;
 using MegaCrit.Sts2.Core.Assets;
+using MegaCrit.Sts2.Core.Modding;
 using Scriban;
 using Scriban.Runtime;
 
@@ -34,15 +36,19 @@ public class ExportBatch {
     }
 
     private void FindMods() {
-        var mod = new ModExport();
-        mods.Add(mod.ID, mod);
+        ModExport basegame = new(null);
+        mods.Add(basegame.ID, basegame);
+        foreach (var mod in ModManager.AllMods) {
+            ModExport export = new(mod);
+            mods.Add(export.ID, export);
+        }
     }
 
     private void FindItems() => items.FindAll();
 
     private void AssignItemsToMods() {
         foreach (var item in items.All())
-            mods["slay-the-spire-2"].AddItem(item);
+            mods.First(mod => mod.Value.Assembly == item.Assembly).Value.AddItem(item);
     }
 
     private void DiscardBasegame() {
@@ -51,7 +57,7 @@ public class ExportBatch {
     }
 
     private void ExportMods() {
-        foreach (var (_, mod) in mods)
+        foreach (var (_, mod) in mods.Where(m => m.Value.Items.All().Any()))
             mod.Export(BaseDir);
     }
 
