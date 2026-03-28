@@ -89,11 +89,11 @@ public partial class ExporterScreen : Control {
     private void UpdateExportingProgress()  {
         if (exporter == null) return;
         if (exporter.ImagesExported >= exporter.NumImagesToExport) {
-            exporter = null;
             deleteButton.Disabled = false;
             exportButton.Disabled = false;
             closeButton.Disabled = false;
             ShowStatus($"Done! Exported {exporter.NumImagesToExport} images in total.");
+            exporter = null;
             return;
         }
         ShowStatus($"{exporter.ImagesExported}/{exporter.NumImagesToExport} images exported");
