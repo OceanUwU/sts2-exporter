@@ -24,7 +24,7 @@ public class PotionExport : ItemExport, IImageExport {
     public string Name => model.Title.GetFormattedText();
     [JsonInclude][JsonPropertyName("color")]
     public string Pool => model.Pool.EnergyColorName.ToLower();
-    [JsonInclude][JsonPropertyName("tier")]
+    [JsonInclude][JsonPropertyName("rarity")]
     public string Rarity => model.Rarity.ToString();
     [JsonInclude][JsonPropertyName("description")]
     public string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText(), EnergyIconHelper.GetPrefix(model));

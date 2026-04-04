@@ -1,3 +1,7 @@
+# v0.1.6
+- Make card color values consistent with relic & potion pool values
+- Make potion rarity field's name consistent with StS1's exporter's
+
 # v0.1.5
 - All orbs (including glass and modded orbs) now export
 

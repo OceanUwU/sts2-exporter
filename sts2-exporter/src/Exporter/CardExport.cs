@@ -32,7 +32,7 @@ public class CardExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("name")]
     public string Name => StripBBCodeTags(model.Title, EnergyIconHelper.GetPrefix(model));
     [JsonInclude][JsonPropertyName("color")]
-    public string Color => model.VisualCardPool.Title.ToLower();
+    public string Color => model.VisualCardPool.EnergyColorName.ToLower();
     [JsonInclude][JsonPropertyName("rarity")]
     public string Rarity => model.Rarity.ToString();
     [JsonInclude][JsonPropertyName("type")]
