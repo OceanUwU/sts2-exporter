@@ -21,8 +21,7 @@ public class EnchantmentExport : ItemExport, IImageExport {
     public EnchantmentExport(EnchantmentModel model) {
         Assembly = model.GetType().Assembly;
         this.model = model.ToMutable();
-        if (this.model.ShowAmount)
-            this.model.Amount = 999;
+        this.model.Amount = 999;
     }
 
     [JsonInclude][JsonPropertyName("id")]

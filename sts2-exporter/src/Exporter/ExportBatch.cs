@@ -4,6 +4,7 @@ using System.Text.Json;
 using Godot;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Modding;
+using MegaCrit.Sts2.Core.Models;
 using Scriban;
 using Scriban.Runtime;
 
@@ -38,7 +39,7 @@ public class ExportBatch {
     private void FindMods() {
         ModExport basegame = new(null);
         mods.Add(basegame.ID, basegame);
-        foreach (var mod in ModManager.AllMods) {
+        foreach (var mod in ModManager.AllMods) { //ModManager.Mods
             ModExport export = new(mod);
             mods.Add(export.ID, export);
         }

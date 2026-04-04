@@ -25,9 +25,9 @@ public class EventExport : ItemExport, IImageExport {
     //[JsonInclude][JsonPropertyName("acts")]
     //private string[] Acts => model.act
     [JsonInclude][JsonPropertyName("description")]
-    private string Description => StripBBCodeTags(model.InitialDescription.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
+    private string Description => StripBBCodeTags(model.InitialDescription.GetFormattedText(), "colorless");
     [JsonInclude][JsonPropertyName("options")]
-    private string[] Options => [..model.GameInfoOptions.Reverse().Select(loc => StripBBCodeTags(loc.GetFormattedText(), EnergyIconHelper.GetPrefix(model)))];
+    private string[] Options => [..model.GameInfoOptions.Reverse().Select(loc => StripBBCodeTags(loc.GetFormattedText(), "colorless"))];
     
     public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) => []; /*{
         if (model.LayoutType == MegaCrit.Sts2.Core.Events.EventLayoutType.Combat) return [];

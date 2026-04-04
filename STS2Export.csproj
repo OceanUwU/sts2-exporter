@@ -21,6 +21,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Scriban" Version="6.5.3" />
+    <PackageReference Include="Scriban" Version="*" />
+    <PackageReference Include="Alchyr.Sts2.BaseLib" Version="*" PrivateAssets="All">
+      <Publicize>true</Publicize>
+    </PackageReference>
   </ItemGroup>
 </Project>
