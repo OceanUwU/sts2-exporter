@@ -1,3 +1,6 @@
+# v0.1.4
+- Set window size to 1080p on run, for consistent image sizes
+
 # v0.1.3
 - Keyword support
 

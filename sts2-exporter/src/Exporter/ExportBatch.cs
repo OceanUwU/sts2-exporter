@@ -5,6 +5,7 @@ using Godot;
 using MegaCrit.Sts2.Core.Assets;
 using MegaCrit.Sts2.Core.Modding;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Nodes;
 using Scriban;
 using Scriban.Runtime;
 
@@ -88,6 +89,7 @@ public class ExportBatch {
     }
 
     private void ExportImages(ExportConfig config) {
+        NGame._window.Size = new(1920, 1080);
         foreach (var item in items.All())
             if (item is IImageExport imageExport)
                 foreach (var request in imageExport.ExportImg(config)) {

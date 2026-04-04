@@ -14,7 +14,7 @@ namespace STS2Export.Exporter;
 
 public class RelicExport : ItemExport, IImageExport {
     private static readonly Vector2I ImgSize = new(200, 200);
-    private const float TipScale = 2f;
+    private const float TipScale = 1f;
     private const float TipCardGap = 10f;
     private const float TipTopMargin = 20f;
 
