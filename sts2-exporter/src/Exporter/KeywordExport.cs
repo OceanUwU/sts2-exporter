@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using BaseLib.Abstracts;
 using BaseLib.Extensions;
 using BaseLib.Patches.Content;
 using BaseLib.Utils.Patching;
@@ -78,7 +79,8 @@ public class KeywordExport: ItemExport, IImageExport {
         ..Enum.GetValues<StaticHoverTip>().Where(static e => !e.ToString().EndsWith("Dynamic")).Select(static e => new KeywordExport((HoverTip)HoverTipFactory.Static(e))),
         ..GetCustomEnums.GetEnumsOfType<StaticHoverTip>().Select(static e => new KeywordExport((HoverTip)HoverTipFactory.Static((StaticHoverTip)(int)e.key), e.declaringType)),
         ..ModelDb.AllPowers.Select(static p => new KeywordExport(p)),
-        ..ModelDb.Orbs.Select(static o => new KeywordExport(o)),
+        ..OrbModel._validOrbs.Select(static o => new KeywordExport(ModelDb.GetById<OrbModel>(o))),
+        ..CustomOrbModel.RegisteredOrbs.Select(static o => new KeywordExport(o)),
         ..ModManager.AllMods.SelectMany(static m => m.assembly.GetTypes().Where(t => t.IsAssignableTo(typeof(DynamicVar))).Select(static v => FromDynamicVar(v))),
     ];
 }
