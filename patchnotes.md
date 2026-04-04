@@ -1,3 +1,6 @@
+# v0.1.8
+- Fix all card pools that had the colourless energy icon (e.g. curse) being tagged as colourless rather than themself
+
 # v0.1.7
 - Fix modded energy icons not being substituted properly
 

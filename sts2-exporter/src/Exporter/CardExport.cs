@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Web;
+using BaseLib.Abstracts;
 using Godot;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Helpers;
@@ -32,7 +33,7 @@ public class CardExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("name")]
     public string Name => StripBBCodeTags(model.Title, model);
     [JsonInclude][JsonPropertyName("color")]
-    public string Color => model.VisualCardPool.EnergyColorName.ToLower();
+    public string Color => model.VisualCardPool is ICustomEnergyIconPool && model.VisualCardPool.EnergyColorName != "colorless" ? model.VisualCardPool.EnergyColorName.ToLower() : model.VisualCardPool.Title.ToLower();
     [JsonInclude][JsonPropertyName("rarity")]
     public string Rarity => model.Rarity.ToString();
     [JsonInclude][JsonPropertyName("type")]
