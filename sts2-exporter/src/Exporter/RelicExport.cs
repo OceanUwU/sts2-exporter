@@ -36,9 +36,9 @@ public class RelicExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("tier")]
     public string Rarity => model.Rarity.ToString();
     [JsonInclude][JsonPropertyName("description")]
-    public string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
+    public string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText(), model);
     [JsonInclude][JsonPropertyName("flavorText")]
-    public string Flavor => StripBBCodeTags(model.Flavor.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
+    public string Flavor => StripBBCodeTags(model.Flavor.GetFormattedText(), model);
     
     private static TextureRect exampleTexRect;
     public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) {

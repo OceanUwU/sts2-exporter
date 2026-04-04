@@ -27,7 +27,7 @@ public class PotionExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("rarity")]
     public string Rarity => model.Rarity.ToString();
     [JsonInclude][JsonPropertyName("description")]
-    public string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText(), EnergyIconHelper.GetPrefix(model));
+    public string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText(), model);
     
     public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) => [new(ImgSize, $"potions/{ID}", null, drawer => {
         NPotion potion = NPotion.Create(model);

@@ -1,3 +1,6 @@
+# v0.1.7
+- Fix modded energy icons not being substituted properly
+
 # v0.1.6
 - Make card color values consistent with relic & potion pool values
 - Make potion rarity field's name consistent with StS1's exporter's

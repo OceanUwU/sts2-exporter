@@ -29,7 +29,7 @@ public class EnchantmentExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("name")]
     private string Name => model.Title.GetFormattedText();
     [JsonInclude][JsonPropertyName("description")]
-    private string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText().Replace("999", "N"), EnergyIconHelper.GetPrefix(model));
+    private string Description => StripBBCodeTags(model.DynamicDescription.GetFormattedText().Replace("999", "N"), model);
     
     public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) => [new(ImgSize, $"enchantments/{ID}", null, drawer => {
         var cardModel = ((CardModel)ModelDb.Get(typeof(UltimateDefend))).ToMutable();

@@ -4,6 +4,9 @@ using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using BaseLib.Abstracts;
+using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Models;
 
 namespace STS2Export.Exporter;
 
@@ -26,10 +29,16 @@ public abstract partial class ItemExport {
     //    return $"{{img={path[(path.LastIndexOf('/')+1)..path.LastIndexOf('.')]}}}";
     //}), static m => ""));
 
-    protected static string StripBBCodeTags(string s, string prefix) => BBCodeSubstitutor.Replace(
+    protected static string StripBBCodeTags(string s, AbstractModel model) {
+        if (EnergyIconHelper.GetPool(model) is ICustomEnergyIconPool pool)
+            return StripBBCodeTags(s, true, pool.TextEnergyIconPath);
+        return StripBBCodeTags(s, EnergyIconHelper.GetPrefix(model));
+    }
+    protected static string StripBBCodeTags(string s, string prefix) => StripBBCodeTags(s, true, $"res://images/packed/sprite_fonts/{prefix}_energy_icon.png");
+    protected static string StripBBCodeTags(string s, bool fullPath, string iconPath) => BBCodeSubstitutor.Replace(
         s
-            .Replace( $"[img]res://images/packed/sprite_fonts/{prefix}_energy_icon.png[/img]", "{E}")
-            .Replace( $"[img]res://images/packed/sprite_fonts/star_icon.png[/img]", "{STAR}"),
+            .Replace($"[img]{iconPath}[/img]", "{E}")
+            .Replace($"[img]res://images/packed/sprite_fonts/star_icon.png[/img]", "{STAR}"),
         static m => ""
     ).Replace("{E}", "[E]").Replace("{STAR}", "[STAR]");
 

@@ -30,7 +30,7 @@ public class CardExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("id")]
     public string ID => model.Id.Entry;
     [JsonInclude][JsonPropertyName("name")]
-    public string Name => StripBBCodeTags(model.Title, EnergyIconHelper.GetPrefix(model));
+    public string Name => StripBBCodeTags(model.Title, model);
     [JsonInclude][JsonPropertyName("color")]
     public string Color => model.VisualCardPool.EnergyColorName.ToLower();
     [JsonInclude][JsonPropertyName("rarity")]
@@ -48,7 +48,7 @@ public class CardExport : ItemExport, IImageExport {
     [JsonInclude][JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)][JsonPropertyName("starCost")]
     public int? StarCost => model.CanonicalStarCost == -1 ? null : (model.HasStarCostX ? -1 : model.CanonicalStarCost);
     [JsonInclude][JsonPropertyName("description")]
-    public string Description => StripBBCodeTags(model.GetDescriptionForPile(PileType.None), EnergyIconHelper.GetPrefix(model));
+    public string Description => StripBBCodeTags(model.GetDescriptionForPile(PileType.None), model);
     [JsonInclude][JsonPropertyName("upgrades")]
     public readonly int Upgrades;
     [JsonIgnore]
