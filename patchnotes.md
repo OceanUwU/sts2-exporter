@@ -1,3 +1,7 @@
+# v0.1.9
+- Fixed x-star-cost cards not exporting their star cost
+- Made mad science export
+
 # v0.1.8
 - Fix all card pools that had the colourless energy icon (e.g. curse) being tagged as colourless rather than themself
 

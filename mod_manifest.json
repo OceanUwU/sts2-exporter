@@ -3,7 +3,7 @@
     "name": "Exporter",
     "author": "ocean",
     "description": "exports stuff",
-    "version": "v0.1.8",
+    "version": "v0.1.9",
     "has_pck": true,
     "has_dll": true,
     "dependencies": ["BaseLib"],

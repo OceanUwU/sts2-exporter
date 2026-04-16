@@ -10,6 +10,8 @@ using Godot;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Cards;
+using MegaCrit.Sts2.Core.Models.Events;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 
 namespace STS2Export.Exporter;
@@ -18,7 +20,7 @@ public class CardExport : ItemExport, IImageExport {
     public static readonly PackedScene CardScene = GD.Load<PackedScene>(NCard._scenePath);
     private static readonly Vector2I ImgSize = new(734, 916);
     
-    private readonly CardModel model;
+    protected readonly CardModel model;
 
     public CardExport(CardModel model, int upgrades) {
         Assembly = model.GetType().Assembly;
@@ -29,7 +31,7 @@ public class CardExport : ItemExport, IImageExport {
     }
 
     [JsonInclude][JsonPropertyName("id")]
-    public string ID => model.Id.Entry;
+    public virtual string ID => model.Id.Entry;
     [JsonInclude][JsonPropertyName("name")]
     public string Name => StripBBCodeTags(model.Title, model);
     [JsonInclude][JsonPropertyName("color")]
@@ -46,8 +48,6 @@ public class CardExport : ItemExport, IImageExport {
             return cost == -1 ? "" : cost.ToString();
         }
     }
-    [JsonInclude][JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)][JsonPropertyName("starCost")]
-    public int? StarCost => model.CanonicalStarCost == -1 ? null : (model.HasStarCostX ? -1 : model.CanonicalStarCost);
     [JsonInclude][JsonPropertyName("description")]
     public string Description => StripBBCodeTags(model.GetDescriptionForPile(PileType.None), model);
     [JsonInclude][JsonPropertyName("upgrades")]
@@ -61,6 +61,12 @@ public class CardExport : ItemExport, IImageExport {
     public string TextWikiData => ProcessCombinedDescription(CombineDescriptions(Description, UpgradeDesc, TextMode.WikiData), TextMode.WikiData);
     [JsonIgnore]
     public string TextWikiFormat => ProcessCombinedDescription(CombineDescriptions(Description, UpgradeDesc, TextMode.WikiFormat), TextMode.WikiFormat);
+
+
+    [JsonInclude][JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)][JsonPropertyName("starCost")]
+    public int? StarCost => model.HasStarCostX ? -1 : (model.CanonicalStarCost == -1 ? null : model.CanonicalStarCost);
+    [JsonInclude][JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)][JsonPropertyName("tinkerTimeRider")]
+    public virtual int? TinkerTimeRider => null;
 
     private enum TextMode { Normal, WikiData, WikiFormat }
 
@@ -248,5 +254,18 @@ public class CardExport : ItemExport, IImageExport {
         });
     }
 
-    public static List<CardExport> FindAll() => [..ModelDb.AllCards.Where(m => m.ShouldShowInCardLibrary).SelectMany(m => Enumerable.Range(0, m.MaxUpgradeLevel + 1).Select(u => new CardExport(m, u)))];
+    public static List<CardExport> FindAll() => [
+        ..ModelDb.AllCards.Where(m => m.ShouldShowInCardLibrary).SelectMany(m => Enumerable.Range(0, m.MaxUpgradeLevel + 1).Select(u => new CardExport(m, u))),
+        ..new (CardType, TinkerTime.RiderEffect)[] { (CardType.Attack, TinkerTime.RiderEffect.Sapping), (CardType.Attack, TinkerTime.RiderEffect.Violence), (CardType.Attack, TinkerTime.RiderEffect.Choking), (CardType.Skill, TinkerTime.RiderEffect.Energized), (CardType.Skill, TinkerTime.RiderEffect.Wisdom), (CardType.Skill, TinkerTime.RiderEffect.Chaos), (CardType.Power, TinkerTime.RiderEffect.Expertise), (CardType.Power, TinkerTime.RiderEffect.Curious), (CardType.Power, TinkerTime.RiderEffect.Improvement) }.SelectMany(t => Enumerable.Range(0, ModelDb.Card<MadScience>().MaxUpgradeLevel+1).Select(u => new MadScienceExport(t, u))),
+    ];
+}
+
+class MadScienceExport : CardExport {
+    public MadScienceExport((CardType, TinkerTime.RiderEffect) values, int upgrades) : base(ModelDb.Card<MadScience>(), upgrades) {
+        ((MadScience)model).TinkerTimeType = values.Item1;
+        ((MadScience)model).TinkerTimeRider = values.Item2;
+    }
+
+    public override string ID => base.ID + "-" + ((MadScience)model).TinkerTimeRider.ToString();
+    public override int? TinkerTimeRider =>  (int)((MadScience)model).TinkerTimeRider;
 }
