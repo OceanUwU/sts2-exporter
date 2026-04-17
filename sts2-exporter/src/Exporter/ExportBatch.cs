@@ -40,7 +40,7 @@ public class ExportBatch {
     private void FindMods() {
         ModExport basegame = new(null);
         mods.Add(basegame.ID, basegame);
-        foreach (var mod in ModManager.AllMods) { //ModManager.Mods
+        foreach (var mod in ModManager.Mods) {
             ModExport export = new(mod);
             mods.Add(export.ID, export);
         }
@@ -96,6 +96,10 @@ public class ExportBatch {
                     NumImagesToExport++;
                     ViewportManager.RequestDraw(request).ContinueWith(task => {
                         Image img = task.Result;
+                        if (img == null) {
+                            NumImagesToExport--;
+                            return;
+                        }
                         string path = $"{BaseDir}/{item.Mod.ID}/{request.Path}.png";
                         DirAccess.MakeDirRecursiveAbsolute(path[..path.LastIndexOf('/')]);
                         img.SavePng(path);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -5,6 +6,7 @@ using Godot;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Monsters;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 
 namespace STS2Export.Exporter;
@@ -53,6 +55,7 @@ public class CreatureExport : ItemExport, IImageExport {
     ];
 
     public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) {
+        if (monsterModel is ToughEgg) return [new(Vector2I.One, $"creatures/{ID}", null, null)];
         NCreatureVisuals visuals = null;
         if (monsterModel != null)
             visuals = monsterModel.CreateVisuals();

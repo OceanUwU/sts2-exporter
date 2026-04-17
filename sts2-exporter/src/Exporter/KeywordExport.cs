@@ -59,8 +59,6 @@ public class KeywordExport: ItemExport, IImageExport {
 
     public KeywordExport(OrbModel orb) : this(orb.DumbHoverTip, orb) { 
         Type = "Orb";
-        GD.Print("AWALLA");
-        GD.Print(GetCustomEnums.GetEnumsOfType<CardKeyword>().Select(static e => ((HoverTip)HoverTipFactory.FromKeyword((CardKeyword)(int)e.key)).Title).ToArray().Join(","));
     }
 
     public static KeywordExport FromDynamicVar(Type type) => new((HoverTip)DynamicVarExtensions.DynamicVarTips.Get((DynamicVar)Activator.CreateInstance(type, 98765m))(), type);
@@ -81,7 +79,7 @@ public class KeywordExport: ItemExport, IImageExport {
         ..ModelDb.AllPowers.Select(static p => new KeywordExport(p)),
         ..OrbModel._validOrbs.Select(static o => new KeywordExport(ModelDb.GetById<OrbModel>(o))),
         ..CustomOrbModel.RegisteredOrbs.Select(static o => new KeywordExport(o)),
-        ..ModManager.AllMods.SelectMany(static m => m.assembly.GetTypes().Where(t => t.IsAssignableTo(typeof(DynamicVar))).Select(static v => FromDynamicVar(v))),
+        ..ModManager.Mods.SelectMany(static m => m.assembly.GetTypes().Where(t => t.IsAssignableTo(typeof(DynamicVar))).Select(static v => FromDynamicVar(v))),
     ];
 }
 

@@ -62,22 +62,6 @@ public partial class ExporterScreen : Control {
         exportButton.Connect(Button.SignalName.Pressed, Callable.From(Export));
         var tween = CreateTween();
         tween.TweenProperty(this, "modulate:a", 1f, 0.25f);
-        // TEMP - rendering test monster TODO: remove
-        return;
-        var model = ModelDb.Monsters.OrderBy(m => m.Id.Entry).FirstOrDefault();
-        NCreatureVisuals visuals = model.CreateVisuals();
-        Control bounds = visuals.GetNode<Control>("%Bounds");
-        AddChild(visuals);
-        if (visuals != null && visuals.HasSpineAnimation) {
-            var animController = visuals.SpineBody;
-            var animState = visuals.SpineBody.GetAnimationState();
-            model.GenerateAnimator(animController);
-            visuals.SetUpSkin(model);
-            animState.SetAnimation("idle_loop");
-        }
-        visuals.Position = bounds.Size / 2f + new Vector2(0f, bounds.Size.Y * 0.5f);
-        visuals.Show();
-        visuals.Modulate = Colors.White;
 }
 
     public override void _Process(double delta) {

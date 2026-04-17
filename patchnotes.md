@@ -1,4 +1,6 @@
 # v0.1.9
+- Star costs are now strings
+- Fixed bug with exporter not running on the new game version
 - Fixed x-star-cost cards not exporting their star cost
 - Made mad science export
 

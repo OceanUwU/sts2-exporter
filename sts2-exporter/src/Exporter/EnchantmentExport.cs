@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Modding;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
+using MegaCrit.Sts2.Core.Models.Enchantments;
 using MegaCrit.Sts2.Core.Nodes;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 
@@ -36,13 +37,15 @@ public class EnchantmentExport : ItemExport, IImageExport {
         NCard card = CardExport.CardScene.Instantiate<NCard>();
         drawer.AddChild(card);
         card.Model = cardModel;
-        cardModel.Enchantment = model;
+        //cardModel.Enchantment = model;
         card.UpdateVisuals(PileType.None, CardPreviewMode.Normal);
-        drawer.RemoveChild(card);
         Control tab = new() { Size = Vector2.Zero };
         //card._enchantmentLabel.Modulate = Colors.Transparent;
+        card._enchantmentTab.Show();
+        card._enchantmentIcon.Texture = model.Icon;
+        card._enchantmentLabel.Visible = model.ShowAmount;
         if (model.ShowAmount)
-            card._enchantmentLabel.Text = "N";
+            card._enchantmentLabel.SetTextAutoSize("N");
         card._enchantmentTab.Reparent(tab);
         drawer.AddChild(tab);
         tab.Position = new(164, 161);

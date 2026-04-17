@@ -64,7 +64,7 @@ public class CardExport : ItemExport, IImageExport {
 
 
     [JsonInclude][JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)][JsonPropertyName("starCost")]
-    public int? StarCost => model.HasStarCostX ? -1 : (model.CanonicalStarCost == -1 ? null : model.CanonicalStarCost);
+    public string StarCost => model.HasStarCostX ? "X" : (model.CanonicalStarCost == -1 ? null : model.CanonicalStarCost.ToString());
     [JsonInclude][JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)][JsonPropertyName("tinkerTimeRider")]
     public virtual int? TinkerTimeRider => null;
 
