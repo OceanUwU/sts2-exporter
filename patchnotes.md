@@ -1,3 +1,6 @@
+# v0.1.10
+- Fixed a bug where the exporter would try to create dynamic variables using the wrong constructor
+
 # v0.1.9
 - Star costs are now strings
 - Fixed bug with exporter not running on the new game version
