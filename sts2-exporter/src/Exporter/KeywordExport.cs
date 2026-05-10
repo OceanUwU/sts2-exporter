@@ -90,13 +90,11 @@ public class GetCustomEnums {
     public static List<FieldInfo> GetEnumsOfType<T>() => Enums.TryGetValue(typeof(T), out var list) ? list : [];
 
     static void Store(FieldInfo field, object key) {
-        if (key == null || field.DeclaringType == null) return;
+        if (field.DeclaringType == null) return;
         if (!Enums.TryGetValue(field.FieldType, out var list)) {
             list = [];
             Enums[field.FieldType] = list;
         }
-        GD.Print(":)");
-        GD.Print(field.FieldType, " ", key, " ", key.GetType());
         list.Add(field);
     }
 

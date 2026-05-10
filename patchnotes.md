@@ -1,3 +1,6 @@
+# v0.1.12
+- Fixed an issue where some modded keywords would not export
+
 # v0.1.11
 - Fixed a crash related to a BaseLib update
 - Make phantasmal gardener and tough egg export dummy images for now instead of failing
