@@ -56,6 +56,7 @@ public class CreatureExport : ItemExport, IImageExport {
 
     public ViewportManager.DrawRequest[] ExportImg(ExportConfig config) {
         if (monsterModel is ToughEgg) return [new(Vector2I.One, $"creatures/{ID}", null, null)];
+        if (monsterModel is PhantasmalGardener) return [new(Vector2I.One, $"creatures/{ID}", null, null)];
         NCreatureVisuals visuals = null;
         if (monsterModel != null)
             visuals = monsterModel.CreateVisuals();

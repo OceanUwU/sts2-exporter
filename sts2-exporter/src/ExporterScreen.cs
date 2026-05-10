@@ -62,7 +62,7 @@ public partial class ExporterScreen : Control {
         exportButton.Connect(Button.SignalName.Pressed, Callable.From(Export));
         var tween = CreateTween();
         tween.TweenProperty(this, "modulate:a", 1f, 0.25f);
-}
+    }
 
     public override void _Process(double delta) {
         Size = GetParent<Control>().Size;

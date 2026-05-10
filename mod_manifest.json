@@ -3,9 +3,13 @@
     "name": "Exporter",
     "author": "ocean",
     "description": "exports stuff",
-    "version": "v0.1.10",
+    "version": "0.1.11",
+    "min_game_version": "0.103.2",
     "has_pck": true,
     "has_dll": true,
-    "dependencies": ["BaseLib"],
+    "dependencies": [{
+        "id": "BaseLib",
+        "min_version": "3.1.2"
+    }],
     "affects_gameplay": false
 }

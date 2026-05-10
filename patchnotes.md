@@ -1,3 +1,7 @@
+# v0.1.11
+- Fixed a crash related to a BaseLib update
+- Make phantasmal gardener and tough egg export dummy images for now instead of failing
+
 # v0.1.10
 - Fixed a bug where the exporter would try to create dynamic variables using the wrong constructor
 

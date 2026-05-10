@@ -73,9 +73,9 @@ public class KeywordExport: ItemExport, IImageExport {
     
     public static List<KeywordExport> FindAll() => [
         ..Enum.GetValues<CardKeyword>().Select(static e => new KeywordExport(e)),
-        ..GetCustomEnums.GetEnumsOfType<CardKeyword>().Select(static e => new KeywordExport((CardKeyword)(int)e.key, e.declaringType)),
+        ..GetCustomEnums.GetEnumsOfType<CardKeyword>().Select(static e => new KeywordExport((CardKeyword)e.GetValue(null), e.DeclaringType)),
         ..Enum.GetValues<StaticHoverTip>().Where(static e => !e.ToString().EndsWith("Dynamic")).Select(static e => new KeywordExport((HoverTip)HoverTipFactory.Static(e))),
-        ..GetCustomEnums.GetEnumsOfType<StaticHoverTip>().Select(static e => new KeywordExport((HoverTip)HoverTipFactory.Static((StaticHoverTip)(int)e.key), e.declaringType)),
+        ..GetCustomEnums.GetEnumsOfType<StaticHoverTip>().Select(static e => new KeywordExport((HoverTip)HoverTipFactory.Static((StaticHoverTip)e.GetValue(null)), e.DeclaringType)),
         ..ModelDb.AllPowers.Select(static p => new KeywordExport(p)),
         ..OrbModel._validOrbs.Select(static o => new KeywordExport(ModelDb.GetById<OrbModel>(o))),
         ..CustomOrbModel.RegisteredOrbs.Select(static o => new KeywordExport(o)),
@@ -85,24 +85,26 @@ public class KeywordExport: ItemExport, IImageExport {
 
 [HarmonyPatch(typeof(GenEnumValues), nameof(GenEnumValues.FindAndGenerate))]
 public class GetCustomEnums {
-    private static readonly Dictionary<Type, List<(object key, Type declaringType)>> Enums = [];
+    private static readonly Dictionary<Type, List<FieldInfo>> Enums = [];
 
-    public static List<(object key, Type declaringType)> GetEnumsOfType<T>() => Enums.TryGetValue(typeof(T), out var list) ? list : [];
+    public static List<FieldInfo> GetEnumsOfType<T>() => Enums.TryGetValue(typeof(T), out var list) ? list : [];
 
     static void Store(FieldInfo field, object key) {
-        if (field.DeclaringType == null) return;
+        if (key == null || field.DeclaringType == null) return;
         if (!Enums.TryGetValue(field.FieldType, out var list)) {
             list = [];
             Enums[field.FieldType] = list;
         }
-        list.Add((key, field.DeclaringType));
+        GD.Print(":)");
+        GD.Print(field.FieldType, " ", key, " ", key.GetType());
+        list.Add(field);
     }
 
     static List<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions) => new InstructionPatcher(instructions)
         .Match(new InstructionMatcher()
             .call(AccessTools.Method(typeof(CustomEnums), nameof(CustomEnums.GenerateKey), [typeof(FieldInfo)]))
-            .stloc_s(11)
         )
+        .Step(1)
         .Insert([
             CodeInstruction.LoadLocal(8),
             CodeInstruction.LoadLocal(11),
