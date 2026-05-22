@@ -1,3 +1,6 @@
+# v0.1.13
+- Fixed a bug preventing exports with new game version
+
 # v0.1.12
 - Fixed an issue where some modded keywords would not export
 

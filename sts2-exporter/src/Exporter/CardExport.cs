@@ -255,8 +255,8 @@ public class CardExport : ItemExport, IImageExport {
     }
 
     public static List<CardExport> FindAll() => [
-        ..ModelDb.AllCards.Where(m => m.ShouldShowInCardLibrary).SelectMany(m => Enumerable.Range(0, m.MaxUpgradeLevel + 1).Select(u => new CardExport(m, u))),
-        ..new (CardType, TinkerTime.RiderEffect)[] { (CardType.Attack, TinkerTime.RiderEffect.Sapping), (CardType.Attack, TinkerTime.RiderEffect.Violence), (CardType.Attack, TinkerTime.RiderEffect.Choking), (CardType.Skill, TinkerTime.RiderEffect.Energized), (CardType.Skill, TinkerTime.RiderEffect.Wisdom), (CardType.Skill, TinkerTime.RiderEffect.Chaos), (CardType.Power, TinkerTime.RiderEffect.Expertise), (CardType.Power, TinkerTime.RiderEffect.Curious), (CardType.Power, TinkerTime.RiderEffect.Improvement) }.SelectMany(t => Enumerable.Range(0, ModelDb.Card<MadScience>().MaxUpgradeLevel+1).Select(u => new MadScienceExport(t, u))),
+        ..ModelDb.AllCards.Where(m => m.ShouldShowInCardLibrary).SelectMany(m => Enumerable.Range(0, Mathf.Max(1, m.MaxUpgradeLevel + 1)).Select(u => new CardExport(m, u))),
+        ..new (CardType, TinkerTime.RiderEffect)[] { (CardType.Attack, TinkerTime.RiderEffect.Sapping), (CardType.Attack, TinkerTime.RiderEffect.Violence), (CardType.Attack, TinkerTime.RiderEffect.Choking), (CardType.Skill, TinkerTime.RiderEffect.Energized), (CardType.Skill, TinkerTime.RiderEffect.Wisdom), (CardType.Skill, TinkerTime.RiderEffect.Chaos), (CardType.Power, TinkerTime.RiderEffect.Expertise), (CardType.Power, TinkerTime.RiderEffect.Curious), (CardType.Power, TinkerTime.RiderEffect.Improvement) }.SelectMany(t => Enumerable.Range(0, Mathf.Max(1,ModelDb.Card<MadScience>().MaxUpgradeLevel+1)).Select(u => new MadScienceExport(t, u))),
     ];
 }
 
