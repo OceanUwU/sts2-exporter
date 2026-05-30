@@ -61,7 +61,11 @@ public class KeywordExport: ItemExport, IImageExport {
         Type = "Orb";
     }
 
-    public static KeywordExport FromDynamicVar(Type type) => new((HoverTip)DynamicVarExtensions.DynamicVarTips.Get((DynamicVar)Activator.CreateInstance(type, 98765m))(), type);
+    public static KeywordExport FromDynamicVar(Type type)
+    {
+        var dyn = (DynamicVar)Activator.CreateInstance(type, 98765m);
+        return new((HoverTip)DynamicVarExtensions.DynamicVarTips.Get(dyn)(dyn), type);
+    }
 
     public KeywordExport(Func<IHoverTip> func, DynamicVar dynamicVar)
     {
@@ -89,7 +93,7 @@ public class GetCustomEnums {
 
     public static List<FieldInfo> GetEnumsOfType<T>() => Enums.TryGetValue(typeof(T), out var list) ? list : [];
 
-    static void Store(FieldInfo field, object key) {
+    static void Store(FieldInfo field) {
         if (field.DeclaringType == null) return;
         if (!Enums.TryGetValue(field.FieldType, out var list)) {
             list = [];
@@ -104,8 +108,7 @@ public class GetCustomEnums {
         )
         .Step(1)
         .Insert([
-            CodeInstruction.LoadLocal(8),
-            CodeInstruction.LoadLocal(11),
+            CodeInstruction.LoadLocal(13),
             CodeInstruction.Call(typeof(GetCustomEnums), nameof(Store)),
         ]);
 }
