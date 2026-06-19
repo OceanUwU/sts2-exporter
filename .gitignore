@@ -4,3 +4,5 @@
 *.pck
 *.csproj.old*
 STS2Export.zip
+mod-uploader.log
+/up/content/*

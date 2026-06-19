@@ -1,4 +1,6 @@
 # StS2 Exporter
+https://steamcommunity.com/sharedfiles/filedetails/?id=3737140578
+
 This is a mod for Slay the Spire 2 which adds a tool to export data for all its items (cards, relics potions, etc.) to text files, and render images of them to files.
 
 It can also dump all textures from the game, including exporting each texture from atlases as individual image files.
