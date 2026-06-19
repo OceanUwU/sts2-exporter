@@ -10,7 +10,7 @@ Its output format is meant to be mostly compatible with [sts-exporter](https://g
 # Running the mod (pre-workshop)
 1. In steam, right click on Slay the Spire 2, click Properties, click Installed Files, click Browse
 1. In the folder that just opened, create a folder called `mods` if it doesn't exist
-1. Download the latest release from the [releases page](https://github.com/oceanuwu/sts2-exporter/releases)
+1. Download the latest release from the [steam workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3737140578)
 1. Extract the contents of the release zip into your `mods` folder
 1. Download [BaseLib](https://github.com/Alchyr/BaseLib-StS2/releases) and extract it to the same location
 1. Run the game

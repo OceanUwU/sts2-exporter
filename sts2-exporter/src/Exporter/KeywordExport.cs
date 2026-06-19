@@ -83,7 +83,7 @@ public class KeywordExport: ItemExport, IImageExport {
         ..ModelDb.AllPowers.Select(static p => new KeywordExport(p)),
         ..OrbModel._validOrbs.Select(static o => new KeywordExport(ModelDb.GetById<OrbModel>(o))),
         ..CustomOrbModel.RegisteredOrbs.Select(static o => new KeywordExport(o)),
-        ..ModManager.Mods.SelectMany(static m => m.assembly.GetTypes().Where(t => t.IsAssignableTo(typeof(DynamicVar)) && t.GetConstructors().Any(c => c.GetParameters() is ParameterInfo[] parameters && parameters.Length == 1 && parameters[0].ParameterType == typeof(decimal))).Select(static v => FromDynamicVar(v))),
+        ..ModManager.Mods.Where(m => m.assembly != null).SelectMany(static m => m.assembly.GetTypes().Where(t => t.IsAssignableTo(typeof(DynamicVar)) && t.GetConstructors().Any(c => c.GetParameters() is ParameterInfo[] parameters && parameters.Length == 1 && parameters[0].ParameterType == typeof(decimal))).Select(static v => FromDynamicVar(v))),
     ];
 }
 
