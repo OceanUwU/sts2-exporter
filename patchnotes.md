@@ -1,3 +1,6 @@
+# v0.1.15
+- Fixed bug with new baselib version
+
 # v0.1.14
 - Fixed bug with new baselib version
 

@@ -108,7 +108,7 @@ public class GetCustomEnums {
         )
         .Step(1)
         .Insert([
-            CodeInstruction.LoadLocal(13),
+            CodeInstruction.LoadLocal(10),
             CodeInstruction.Call(typeof(GetCustomEnums), nameof(Store)),
         ]);
 }

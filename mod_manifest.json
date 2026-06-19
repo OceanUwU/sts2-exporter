@@ -3,7 +3,7 @@
     "name": "Exporter",
     "author": "ocean",
     "description": "exports stuff",
-    "version": "0.1.14",
+    "version": "0.1.15",
     "min_game_version": "0.103.2",
     "has_pck": true,
     "has_dll": true,
