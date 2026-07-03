@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -26,7 +27,7 @@ public class ModExport {
     [JsonIgnore]
     public readonly bool IsBasegame = false;
     [JsonIgnore]
-    public readonly Assembly Assembly;
+    public readonly List<Assembly> Assemblies;
 
     private ModExport() {
         Items = new(this);
@@ -36,7 +37,7 @@ public class ModExport {
         if (mod == null) {
             ID = "slay-the-spire-2";
             Name = "Slay the Spire 2";
-            Assembly = typeof(NGame).Assembly;
+            Assemblies = [typeof(NGame).Assembly];
             IsBasegame = true;
         } else {
             ID = mod.manifest.id;
@@ -44,7 +45,7 @@ public class ModExport {
             version = mod.manifest.version;
             authors = [mod.manifest.author];
             description = mod.manifest.description;
-            Assembly = mod.assembly;
+            Assemblies = mod.assemblies;
         }
     }
 

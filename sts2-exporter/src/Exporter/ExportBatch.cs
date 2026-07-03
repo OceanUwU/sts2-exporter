@@ -50,7 +50,7 @@ public class ExportBatch {
 
     private void AssignItemsToMods() {
         foreach (var item in items.All())
-            mods.First(mod => mod.Value.Assembly == item.Assembly).Value.AddItem(item);
+            mods.FirstOrDefault(mod => mod.Value.Assemblies.Contains(item.Assembly)).Value.AddItem(item);
     }
 
     private void DiscardBasegame() {

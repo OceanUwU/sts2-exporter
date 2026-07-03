@@ -1,3 +1,6 @@
+[h1]v0.1.17[/h1]
+- Fixed incompatibility with the newest beta
+
 [h1]v0.1.16[/h1]
 - Fixed a crash where the exporter would try to export mods that weren't loaded
 
