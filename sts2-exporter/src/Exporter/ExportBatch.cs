@@ -12,7 +12,7 @@ using Scriban.Runtime;
 namespace STS2Export.Exporter;
 
 public class ExportBatch {
-    private const string BaseDir = "./export";
+    private static readonly string BaseDir = OS.GetExecutablePath().GetBaseDir().PathJoin("export");
     private static readonly string TexDumpDir = BaseDir.PathJoin("texDump");
 
     private readonly Dictionary<string, ModExport> mods = [];
@@ -22,6 +22,7 @@ public class ExportBatch {
     public int NumImagesToExport = 0;
 
     public void Run(ExportConfig config) {
+        GD.Print(BaseDir);
         DirAccess.MakeDirRecursiveAbsolute(BaseDir);
         FindMods();
         FindItems();
