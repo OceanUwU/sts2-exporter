@@ -40,7 +40,7 @@ public class ExportBatch {
     private void FindMods() {
         ModExport basegame = new(null);
         mods.Add(basegame.ID, basegame);
-        foreach (var mod in ModManager.Mods) {
+        foreach (var mod in ModManager.GetLoadedMods()) {
             ModExport export = new(mod);
             mods.Add(export.ID, export);
         }

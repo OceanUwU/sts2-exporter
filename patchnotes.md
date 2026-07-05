@@ -1,3 +1,6 @@
+[h1]v0.1.18[/h1]
+- Fixed a bug where having a workshop version and a non-workshop version of the same mod would prevent you from exporting
+
 [h1]v0.1.17[/h1]
 - Fixed incompatibility with the newest beta
 
