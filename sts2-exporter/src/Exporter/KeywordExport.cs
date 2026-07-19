@@ -64,7 +64,9 @@ public class KeywordExport: ItemExport, IImageExport {
     public static KeywordExport FromDynamicVar(Type type)
     {
         var dyn = (DynamicVar)Activator.CreateInstance(type, 98765m);
-        return new((HoverTip)DynamicVarExtensions.DynamicVarTips.Get(dyn)(dyn), type);
+        var tipGetter = DynamicVarExtensions.DynamicVarTips.Get(dyn);
+        if (tipGetter == null) return null;
+        return new((HoverTip)tipGetter(dyn), type);
     }
 
     public KeywordExport(Func<IHoverTip> func, DynamicVar dynamicVar)
@@ -83,7 +85,7 @@ public class KeywordExport: ItemExport, IImageExport {
         ..ModelDb.AllPowers.Select(static p => new KeywordExport(p)),
         ..OrbModel._validOrbs.Select(static o => new KeywordExport(ModelDb.GetById<OrbModel>(o))),
         ..CustomOrbModel.RegisteredOrbs.Select(static o => new KeywordExport(o)),
-        ..ModManager.Mods.Where(m => m.assemblies != null).SelectMany(static m => m.assemblies.SelectMany(m => m.GetTypes()).Where(t => t.IsAssignableTo(typeof(DynamicVar)) && t.GetConstructors().Any(c => c.GetParameters() is ParameterInfo[] parameters && parameters.Length == 1 && parameters[0].ParameterType == typeof(decimal))).Select(static v => FromDynamicVar(v))),
+        ..ModManager.Mods.Where(m => m.assemblies != null).SelectMany(static m => m.assemblies.SelectMany(m => m.GetTypes()).Where(t => t.IsAssignableTo(typeof(DynamicVar)) && t.GetConstructors().Any(c => c.GetParameters() is ParameterInfo[] parameters && parameters.Length == 1 && parameters[0].ParameterType == typeof(decimal))).Select(static v => FromDynamicVar(v)).Where(i => i != null)),
     ];
 }
 

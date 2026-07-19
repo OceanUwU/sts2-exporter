@@ -1,3 +1,6 @@
+[h1]v0.1.19[/h1]
+- fix
+
 [h1]v0.1.18[/h1]
 - Fixed a bug where having a workshop version and a non-workshop version of the same mod would prevent you from exporting
 - Attempted to fix file paths being incorrect on macos
