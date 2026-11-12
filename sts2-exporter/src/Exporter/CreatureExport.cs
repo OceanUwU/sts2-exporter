@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Helpers;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Monsters;
 using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.Unlocks;
 
 namespace STS2Export.Exporter;
 
@@ -75,8 +76,7 @@ public class CreatureExport : ItemExport, IImageExport {
                     visuals.SetUpSkin(monsterModel);
                 }
                 else if (characterModel != null) {
-                    //characterModel.Creature = new(characterModel, MegaCrit.Sts2.Core.Combat.CombatSide.Enemy, null);
-                    characterModel.GenerateAnimator(animController);
+                    characterModel.GenerateAnimator(animController, new(new Player(characterModel, 0, 80, 80, 3, 0, 0, 0, new(), UnlockState.all), 80, 80));
                 }
                 animState.SetAnimation("idle_loop");
             }

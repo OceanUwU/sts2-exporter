@@ -22,7 +22,6 @@ public class ExportBatch {
     public int NumImagesToExport = 0;
 
     public void Run(ExportConfig config) {
-        GD.Print(BaseDir);
         DirAccess.MakeDirRecursiveAbsolute(BaseDir);
         FindMods();
         FindItems();

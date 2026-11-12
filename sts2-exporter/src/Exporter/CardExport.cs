@@ -17,6 +17,7 @@ using MegaCrit.Sts2.Core.Nodes.Cards;
 namespace STS2Export.Exporter;
 
 public class CardExport : ItemExport, IImageExport {
+    private const int MaxUpgradesToExport = 9;
     public static readonly PackedScene CardScene = GD.Load<PackedScene>(NCard._scenePath);
     private static readonly Vector2I ImgSize = new(734, 916);
     
@@ -53,7 +54,7 @@ public class CardExport : ItemExport, IImageExport {
     [JsonInclude][JsonPropertyName("upgrades")]
     public readonly int Upgrades;
     [JsonIgnore]
-    public CardExport UpgradedVersion => Upgrades >= model.MaxUpgradeLevel ? null : new(model.CanonicalInstance, Upgrades + 1);
+    public CardExport UpgradedVersion => Upgrades >= Math.Min(model.MaxUpgradeLevel, MaxUpgradesToExport) ? null : new(model.CanonicalInstance, Upgrades + 1);
     private string UpgradeDesc => UpgradedVersion is CardExport up ? up.Description : Description;
     [JsonIgnore]
     public string TextAndUpgrade => ProcessCombinedDescription(CombineDescriptions(Description, UpgradeDesc, TextMode.Normal), TextMode.Normal);
@@ -255,7 +256,7 @@ public class CardExport : ItemExport, IImageExport {
     }
 
     public static List<CardExport> FindAll() => [
-        ..ModelDb.AllCards.Where(m => m.ShouldShowInCardLibrary).SelectMany(m => Enumerable.Range(0, Mathf.Max(1, m.MaxUpgradeLevel + 1)).Select(u => new CardExport(m, u))),
+        ..ModelDb.AllCards.Where(m => m.ShouldShowInCardLibrary).SelectMany(m => Enumerable.Range(0, Mathf.Max(1, Math.Min(m.MaxUpgradeLevel, MaxUpgradesToExport) + 1)).Select(u => new CardExport(m, u))),
         ..new (CardType, TinkerTime.RiderEffect)[] { (CardType.Attack, TinkerTime.RiderEffect.Sapping), (CardType.Attack, TinkerTime.RiderEffect.Violence), (CardType.Attack, TinkerTime.RiderEffect.Choking), (CardType.Skill, TinkerTime.RiderEffect.Energized), (CardType.Skill, TinkerTime.RiderEffect.Wisdom), (CardType.Skill, TinkerTime.RiderEffect.Chaos), (CardType.Power, TinkerTime.RiderEffect.Expertise), (CardType.Power, TinkerTime.RiderEffect.Curious), (CardType.Power, TinkerTime.RiderEffect.Improvement) }.SelectMany(t => Enumerable.Range(0, Mathf.Max(1,ModelDb.Card<MadScience>().MaxUpgradeLevel+1)).Select(u => new MadScienceExport(t, u))),
     ];
 }
