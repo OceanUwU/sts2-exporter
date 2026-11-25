@@ -56,7 +56,7 @@ public class RelicExport : ItemExport, IImageExport {
         Control hoverTipParent = new();
         var tipSet = NHoverTipSet.CreateAndShow(hoverTipParent, HoverTipFactory.FromRelic(model));
         tipSet.Reparent(hoverTipParent);
-        tipSet._cardHoverTipContainer.LayoutResizeAndReposition(Vector2.Zero, HoverTipAlignment.Center);
+        tipSet._cardHoverTipContainer.LayoutResizeAndReposition(Vector2.Zero, HoverTipAlignment.Left);
         Vector2I tipSize = (Vector2I)(new Vector2(tipSet._textHoverTipContainer.Size.X + (tipSet._cardHoverTipContainer.Size.X > 0 ? TipCardGap : 0) + tipSet._cardHoverTipContainer.Size.X, Mathf.Max(tipSet._textHoverTipContainer.Size.Y, tipSet._cardHoverTipContainer.Size.Y + TipTopMargin * TipScale)) * TipScale);
         ViewportManager.DrawRequest tipImg = new(tipSize, $"relic-tips/{ID}", null, drawer =>{
             drawer.AddChild(hoverTipParent);

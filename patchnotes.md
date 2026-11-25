@@ -1,3 +1,6 @@
+[h1]v0.1.21[/h1]
+- fix for latest beta
+
 [h1]v0.1.20[/h1]
 - fix for latest beta exporting limitless upgrade cards infinite times
 
